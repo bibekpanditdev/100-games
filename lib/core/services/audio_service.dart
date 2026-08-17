@@ -86,6 +86,7 @@ class AudioService {
   bool _musicOn = true;
   double _sfxVolume = 0.8;
   double _musicVolume = 0.6;
+  double _currentBgmVolume = 0.0;
 
   String? _targetTrack;
   Timer? _fadeTimer;
@@ -99,9 +100,10 @@ class AudioService {
     _initialized = true;
     try {
       await AudioPlayer.global.setAudioContext(
-        AudioContext(
-          android: AudioContextAndroid(isSpeakerphone: false, respectSilence: true),
-        ),
+        AudioContextConfig(
+          respectSilence: true,
+          stayAwake: false,
+        ).build(),
       );
     } catch (_) {}
     try {
@@ -134,6 +136,7 @@ class AudioService {
       unawaited(_startBgm(_targetTrack!));
     } else if (musicOn) {
       // Live volume change while playing.
+      _currentBgmVolume = _musicVolume;
       unawaited(_bgm.setVolume(_musicVolume));
     }
   }
@@ -142,7 +145,12 @@ class AudioService {
   Future<void> sfx(String key) async {
     if (!_initialized || !_soundOn || !_sfxKeys.contains(key)) return;
     try {
-      await _cache.play('$key.wav', volume: _sfxVolume, mode: PlayerMode.lowLatency);
+      final player = AudioPlayer();
+      await player.play(
+        AssetSource('audio/sfx/$key.wav'),
+        volume: _sfxVolume,
+        mode: PlayerMode.lowLatency,
+      );
     } catch (_) {}
   }
 
@@ -162,6 +170,7 @@ class AudioService {
       await _bgm.stop();
       await _bgm.setReleaseMode(ReleaseMode.loop);
       await _bgm.setSourceAsset('audio/bgm/$track.wav');
+      _currentBgmVolume = 0.0;
       await _bgm.setVolume(0);
       await _bgm.resume();
       await _fadeInBgm();
@@ -173,13 +182,15 @@ class AudioService {
   /// Smoothly silences BGM (muting must not cut with a pop).
   Future<void> _fadeOutBgm() async {
     _cancelFade();
-    var v = await _bgm.getVolume();
+    var v = _currentBgmVolume;
     _fadeTimer = Timer.periodic(const Duration(milliseconds: 30), (t) async {
       v -= 0.12;
       if (v <= 0.01) {
         t.cancel();
+        _currentBgmVolume = 0.0;
         await _bgm.pause();
       } else {
+        _currentBgmVolume = v;
         try {
           await _bgm.setVolume(v);
         } catch (_) {}
@@ -196,6 +207,7 @@ class AudioService {
         t.cancel();
         v = _musicVolume;
       }
+      _currentBgmVolume = v;
       try {
         await _bgm.setVolume(v);
       } catch (_) {}

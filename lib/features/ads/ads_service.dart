@@ -45,7 +45,8 @@ class AdsService {
     if (!_initialized) return null;
     final completer = Completer<BannerAd?>();
     try {
-      final banner = BannerAd(
+      BannerAd? banner;
+      banner = BannerAd(
         adUnitId: AdUnits.banner,
         size: AdSize.banner,
         request: const AdRequest(),
@@ -143,7 +144,7 @@ class AdsService {
 
     try {
       await loaded.show(
-        onUserEarnedReward: (RewardedAd ad, RewardItem reward) {
+        onUserEarnedReward: (AdWithoutView ad, RewardItem reward) {
           rewardEarned = true;
         },
       );
@@ -166,7 +167,7 @@ class AdsService {
       await RewardedAd.load(
         adUnitId: AdUnits.rewarded,
         request: const AdRequest(),
-        adLoadCallback: RewardedAdLoadCallback(
+        rewardedAdLoadCallback: RewardedAdLoadCallback(
           onAdLoaded: (ad) {
             _rewarded = ad;
             if (!completer.isCompleted) completer.complete(ad);

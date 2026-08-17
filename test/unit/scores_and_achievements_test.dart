@@ -22,12 +22,13 @@ GameDefinition _game(String id, GameCategory category) => GameDefinition(
     );
 
 void main() {
+  late AppDatabase db;
   late ScoresRepository scores;
   late AchievementsRepository achievements;
   late ProgressController progress;
 
   setUp(() async {
-    final db = await openTestDb();
+    db = await openTestDb();
     scores = ScoresRepository(db.db);
     achievements = AchievementsRepository(db.db);
     progress = ProgressController(await openTestBox('ach'));
@@ -62,6 +63,7 @@ void main() {
       repository: achievements,
       scores: scores,
       progress: progress,
+      db: db.db,
     );
 
     final game = _game('g3', GameCategory.arcade);

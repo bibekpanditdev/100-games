@@ -21,7 +21,7 @@ class PlayGamesService {
     if (_signedIn) return true;
     try {
       final ok = await GamesServices.signIn();
-      _signedIn = ok.toLowerCase() == 'true';
+      _signedIn = ok?.toLowerCase() == 'true';
     } catch (e) {
       debugPrint('Play Games sign-in failed: $e');
       _signedIn = false;
@@ -50,14 +50,25 @@ class PlayGamesService {
   Future<void> submitScore({required String leaderboardId, required int score}) async {
     if (!_signedIn) return;
     try {
-      await GamesServices.submitScore(score: score, leaderboardID: leaderboardId);
+      await GamesServices.submitScore(
+        score: Score(
+          androidLeaderboardID: leaderboardId,
+          iOSLeaderboardID: leaderboardId,
+          value: score,
+        ),
+      );
     } catch (_) {}
   }
 
   Future<void> unlockAchievement({required String achievementId}) async {
     if (!_signedIn) return;
     try {
-      await GamesServices.unlock(achievementID: achievementId);
+      await GamesServices.unlock(
+        achievement: Achievement(
+          androidID: achievementId,
+          iOSID: achievementId,
+        ),
+      );
     } catch (_) {}
   }
 }

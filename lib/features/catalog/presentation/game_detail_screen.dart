@@ -14,7 +14,7 @@ import '../../../shared/widgets/skeleton.dart';
 import '../../../shared/widgets/star_rating.dart';
 import '../../game_player/engine_registry.dart';
 import '../../gamification/adaptive_difficulty.dart';
-import '../catalog_providers.dart';
+import 'catalog_providers.dart';
 import '../domain/game_definition.dart';
 
 /// Shows everything about one game, resolved through [gameByIdProvider].

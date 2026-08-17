@@ -35,17 +35,25 @@ class BrowseScreen extends ConsumerStatefulWidget {
 }
 
 class _BrowseScreenState extends ConsumerState<BrowseScreen> {
-  late final TextEditingController _search =
-      TextEditingController(text: widget.initialQuery);
-  late bool _searchOpen = widget.initialQuery.isNotEmpty;
-  late String _query = widget.initialQuery;
-  GameCategory? _category = widget.initialCategory;
+  late final TextEditingController _search;
+  late bool _searchOpen;
+  late String _query;
+  GameCategory? _category;
   Difficulty? _difficulty;
   _SortOrder _sort = _SortOrder.popular;
 
   /// Mind-module subcategory filter (logic/word/memory/math/spatial);
   /// only shown while the Mind category is selected.
   String? _mindGroup;
+
+  @override
+  void initState() {
+    super.initState();
+    _search = TextEditingController(text: widget.initialQuery);
+    _searchOpen = widget.initialQuery.isNotEmpty;
+    _query = widget.initialQuery;
+    _category = widget.initialCategory;
+  }
 
   @override
   void dispose() {
