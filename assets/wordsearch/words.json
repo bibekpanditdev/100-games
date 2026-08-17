@@ -1,0 +1,47 @@
+{
+  "themes": {
+    "animals": [
+      "CAT", "DOG", "FOX", "BEAR", "LION", "TIGER", "ZEBRA", "HORSE",
+      "SHEEP", "GOAT", "PANDA", "KOALA", "CAMEL", "LLAMA", "SLOTH",
+      "OTTER", "RHINO", "HIPPO", "MOOSE", "BISON", "EAGLE", "OWL",
+      "FALCON", "RAVEN", "TURTLE", "FROG", "SHARK", "WHALE", "SNAKE",
+      "MONKEY"
+    ],
+    "space": [
+      "SUN", "MOON", "STAR", "MARS", "VENUS", "PLUTO", "SATURN", "URANUS",
+      "NEPTUNE", "EARTH", "COMET", "ASTEROID", "METEOR", "GALAXY", "NEBULA",
+      "ORBIT", "ROCKET", "COSMOS", "LUNAR", "SOLAR", "PLANET", "ALIEN",
+      "GRAVITY", "ECLIPSE", "QUASAR", "PULSAR", "SUPERNOVA", "TELESCOPE",
+      "SPUTNIK", "APOLLO"
+    ],
+    "food": [
+      "PIE", "TACO", "SOUP", "RICE", "BEANS", "CORN", "PASTA", "PIZZA",
+      "BREAD", "SALAD", "TOAST", "BACON", "MANGO", "LEMON", "OLIVE",
+      "ONION", "GARLIC", "HONEY", "SUGAR", "CANDY", "DONUT", "WAFFLE",
+      "BURGER", "CHEESE", "BUTTER", "COOKIE", "MUFFIN", "NOODLE", "SALSA",
+      "PUMPKIN"
+    ],
+    "countries": [
+      "NEPAL", "INDIA", "CHINA", "JAPAN", "KENYA", "EGYPT", "CHILE",
+      "PERU", "CUBA", "IRAN", "MALI", "LAOS", "FIJI", "SPAIN", "ITALY",
+      "FRANCE", "GREECE", "NORWAY", "SWEDEN", "POLAND", "TURKEY",
+      "CANADA", "MEXICO", "BRAZIL", "QATAR", "GHANA", "JORDAN", "NIGER",
+      "VIETNAM", "PORTUGAL"
+    ],
+    "sports": [
+      "GOLF", "RUGBY", "BOXING", "TENNIS", "SOCCER", "HOCKEY", "KARATE",
+      "JUDO", "SKIING", "SURFING", "ROWING", "DIVING", "SPRINT",
+      "MARATHON", "CRICKET", "ARCHERY", "FENCING", "SKATING", "CYCLING",
+      "RUNNING", "JOGGING", "CLIMBING", "BOWLING", "BASEBALL",
+      "FOOTBALL", "VOLLEYBALL", "WRESTLING", "BADMINTON", "GYMNASTICS",
+      "SNOWBOARD"
+    ],
+    "music": [
+      "DRUM", "FLUTE", "PIANO", "VIOLIN", "CELLO", "HARP", "OBOE",
+      "TEMPO", "RHYTHM", "MELODY", "CHORD", "LYRICS", "SINGER", "ALBUM",
+      "GENRE", "OPERA", "CHOIR", "ORGAN", "TROMBONE", "TRUMPET", "GUITAR",
+      "BANJO", "VIOLA", "BASSOON", "CONCERT", "OCTAVE", "MUSIC", "ENCORE",
+      "BALLAD", "ANTHEM"
+    ]
+  }
+}

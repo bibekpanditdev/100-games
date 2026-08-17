@@ -1,0 +1,52 @@
+name: thousand_games
+description: "1000+ Offline Games — arcade, puzzle, cards, board and trivia. Fully offline, ads-supported, local leaderboards and achievements."
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # State management & DI
+  flutter_riverpod: ^2.5.1
+
+  # Local storage: Hive for fast key-value state/settings, SQLite for catalog/scores/achievements.
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  sqflite: ^2.3.0
+  path: ^1.8.3
+  path_provider: ^2.1.0
+
+  # Monetization (all calls guarded — app is fully playable offline / without SDK init).
+  google_mobile_ads: ^5.0.0
+
+  # Optional online leaderboard/achievement sync. Never required for gameplay.
+  games_services: ^4.0.0
+
+  # Offline audio: bundled SFX + looping BGM (see lib/core/services/audio_service.dart).
+  audioplayers: ^6.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+  sqflite_common_ffi: ^2.3.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/manifests/
+    - assets/trivia/
+    - assets/wordsearch/
+    - assets/audio/sfx/
+    - assets/audio/bgm/
+    - assets/mind/words/
+
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter.ttf

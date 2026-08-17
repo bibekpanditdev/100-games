@@ -1,0 +1,36 @@
+{
+  "comment": "Optional add-on manifest. Games listed here are merged into the catalog at first launch (and on each subsequent launch) without any code changes. Each entry must use a 'template' that exists in the engine registry. 'config' keys are template-specific — see docs/ADDING_A_GAME.md.",
+  "games": [
+    {
+      "id": "custom_snake_turbo",
+      "title": "Turbo Snake",
+      "category": "arcade",
+      "template": "snake",
+      "difficulty": "hard",
+      "theme": "neon",
+      "thumbnail": null,
+      "unlocked": true,
+      "config": {
+        "grid": 16,
+        "speed": 9.0,
+        "wrap": false
+      }
+    },
+    {
+      "id": "custom_match3_garden_giant",
+      "title": "Garden Match Deluxe",
+      "category": "puzzle",
+      "template": "match3",
+      "difficulty": "medium",
+      "theme": "meadow",
+      "thumbnail": null,
+      "unlocked": true,
+      "config": {
+        "cols": 9,
+        "rows": 9,
+        "moves": 30,
+        "target": 4000
+      }
+    }
+  ]
+}
