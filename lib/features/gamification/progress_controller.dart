@@ -119,36 +119,4 @@ class ProgressController extends ChangeNotifier {
     await _box.clear();
     notifyListeners();
   }
-
-  // ---- Adaptive difficulty (on-device heuristic) ------------------------
-  // Keeps the last few star results per template so the UI can nudge the
-  // suggested difficulty up after strong results and down after weak ones.
-
-  static const int _adaptiveWindow = 5;
-
-  Map<String, List<int>> get _recentStars => Map<String, List<int>>.from(
-        (_box.get('recentStars', defaultValue: {}) as Map).map(
-          (k, v) => MapEntry(k as String, List<int>.from(v as List)),
-        ),
-      );
-
-  void recordResultForAdaptive(String template, int stars) {
-    final all = _recentStars;
-    final list = all.putIfAbsent(template, () => <int>[]);
-    list.add(stars);
-    if (list.length > _adaptiveWindow) list.removeRange(0, list.length - _adaptiveWindow);
-    _box.put('recentStars', all);
-  }
-
-  /// Suggested difficulty for a template from recent results:
-  /// avg stars >= 2.4 -> hard, >= 1.4 -> medium, else easy. Null when there
-  /// isn't enough history yet (fewer than 3 results).
-  String? suggestedDifficulty(String template) {
-    final list = _recentStars[template];
-    if (list == null || list.length < 3) return null;
-    final avg = list.reduce((a, b) => a + b) / list.length;
-    if (avg >= 2.4) return 'hard';
-    if (avg >= 1.4) return 'medium';
-    return 'easy';
-  }
 }

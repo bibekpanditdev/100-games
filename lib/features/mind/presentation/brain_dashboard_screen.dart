@@ -11,7 +11,7 @@ import '../../../core/utils/formatters.dart';
 import '../../catalog/domain/game_definition.dart';
 import '../brain_training/brain_providers.dart';
 import '../brain_training/brain_training_service.dart';
-import '../../../gamification/progress_controller.dart';
+import '../../gamification/progress_controller.dart';
 import '../../catalog/presentation/catalog_providers.dart';
 import '../../../shared/widgets/empty_state.dart';
 import '../../../shared/widgets/game_thumbnail.dart';

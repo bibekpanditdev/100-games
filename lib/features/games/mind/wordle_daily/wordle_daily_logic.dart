@@ -73,7 +73,7 @@ class WordleDailyLogic {
     required int maxGuesses,
     Set<String>? extraValid,
   }) {
-    final bank = normalizeBank(bank5);
+    final bank = normalizeBank(bank5).toList();
     final pool = bank.isEmpty ? <String>['QUIET'] : bank;
     final answer =
         pool[stableHash('$dayKey|$definitionId') % pool.length];
@@ -159,7 +159,7 @@ class WordleDailyLogic {
   final String answer;
   final int maxGuesses;
   final Set<String> _valid;
-  final List<WordleGuess> _guesses = <WordleGuess>[];
+  final List<WordleGuess> _guesses;
 
   List<WordleGuess> get guesses => List.unmodifiable(_guesses);
 

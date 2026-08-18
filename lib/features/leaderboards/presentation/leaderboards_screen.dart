@@ -38,7 +38,7 @@ class LeaderboardsScreen extends ConsumerStatefulWidget {
   const LeaderboardsScreen({super.key});
 
   @override
-  State<LeaderboardsScreen> createState() => _LeaderboardsScreenState();
+  ConsumerState<LeaderboardsScreen> createState() => _LeaderboardsScreenState();
 }
 
 class _LeaderboardsScreenState extends ConsumerState<LeaderboardsScreen> {

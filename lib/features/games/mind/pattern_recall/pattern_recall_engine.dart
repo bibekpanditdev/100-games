@@ -140,7 +140,7 @@ class _PatternRecallGameState extends State<PatternRecallGame> {
         AudioService.I.sfx(SfxKeys.place);
         HapticFeedback.selectionClick();
       case PatternTapResult.roundComplete:
-        final elapsed = _windowMs - max(0, _remainingMs);
+        final elapsed = _windowMs - max(0, _remainingMs).toInt();
         _score += _logic.roundScore(elapsedMs: elapsed, windowMs: _windowMs);
         AudioService.I.sfx(SfxKeys.correct);
         _phase = _PrPhase.revealSuccess;

@@ -51,7 +51,7 @@ class SimonGame extends StatefulWidget {
 
 class _SimonGameState extends State<SimonGame> {
   static const int _roundCap = 15;
-  static const List<Color> _padColors = [
+  static final List<Color> _padColors = [
     kPieceColors[0],
     kPieceColors[1],
     kPieceColors[2],

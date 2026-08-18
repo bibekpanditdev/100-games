@@ -153,7 +153,7 @@ class HangmanLogic {
   final String word;
   final int maxLives;
   int _lives;
-  final Set<String> _tried = <String>{};
+  final Set<String> _tried;
 
   /// Lives still remaining (0 = lost).
   int get lives => _lives;

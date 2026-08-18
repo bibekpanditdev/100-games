@@ -19,7 +19,7 @@ void setupTestEnv() {
     _ffiInitialized = true;
   }
   if (_hiveDir == null) {
-    _hiveDir = Directory.systemTemp.createTempSync('tg_hive_test');
+    _hiveDir = Directory.systemTemp.createTempSync('tg_hive_test').path;
     Hive.init(_hiveDir!);
   }
 }

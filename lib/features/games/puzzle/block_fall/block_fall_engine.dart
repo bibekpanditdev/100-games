@@ -109,7 +109,7 @@ class _BlockFallGameState extends State<BlockFallGame> {
     );
   }
 
-  void _onTick() {
+  void _onTick([Timer? _]) {
     if (!_interactive) return;
     _fallAccumulator += _tickMs / 1000 * _logic.gravitySpeed;
     var landed = false;

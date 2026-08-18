@@ -107,7 +107,7 @@ class _WordleDailyGameState extends State<WordleDailyGame>
     // at midnight, so yesterday's guesses must not leak into today's run.
     final restoredRaw = _session.restoredState;
     WordleDailyLogic? restored;
-    if (restoredRaw is Map && restoredRaw['day'] == today) {
+    if (restoredRaw != null && restoredRaw['day'] == today) {
       restored = WordleDailyLogic.tryFromMap(
         <String, dynamic>{
           'answer': restoredRaw['answer'],

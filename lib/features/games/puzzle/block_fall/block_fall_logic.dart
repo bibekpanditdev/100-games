@@ -6,6 +6,14 @@ library;
 
 import 'dart:math';
 
+/// A 2D grid position with row (r) and column (c).
+class GridPos {
+  const GridPos(this.r, this.c);
+
+  final int r;
+  final int c;
+}
+
 /// One tetromino kind: a bounding box and its base cell offsets.
 ///
 /// Rotations are derived by rotating the offsets inside the box:
@@ -14,14 +22,14 @@ class TetrominoDef {
   const TetrominoDef(this.box, this.baseCells);
 
   final int box;
-  final List<Point<int>> baseCells;
+  final List<GridPos> baseCells;
 
-  List<List<Point<int>>> rotations() {
-    var cells = List<Point<int>>.of(baseCells);
-    final states = <List<Point<int>>>[];
+  List<List<GridPos>> rotations() {
+    var cells = List<GridPos>.of(baseCells);
+    final states = <List<GridPos>>[];
     for (var i = 0; i < 4; i++) {
-      states.add(List<Point<int>>.unmodifiable(cells));
-      cells = [for (final p in cells) Point<int>(p.c, box - 1 - p.r)];
+      states.add(List<GridPos>.unmodifiable(cells));
+      cells = [for (final p in cells) GridPos(p.c, box - 1 - p.r)];
     }
     return states;
   }
@@ -30,13 +38,13 @@ class TetrominoDef {
 /// The classic seven tetrominoes in I, O, T, S, Z, J, L order.
 /// The list index doubles as the piece (and colour) id.
 const List<TetrominoDef> kTetrominoes = [
-  TetrominoDef(4, [Point(1, 0), Point(1, 1), Point(1, 2), Point(1, 3)]),
-  TetrominoDef(2, [Point(0, 0), Point(0, 1), Point(1, 0), Point(1, 1)]),
-  TetrominoDef(3, [Point(0, 1), Point(1, 0), Point(1, 1), Point(1, 2)]),
-  TetrominoDef(3, [Point(0, 1), Point(0, 2), Point(1, 0), Point(1, 1)]),
-  TetrominoDef(3, [Point(0, 0), Point(0, 1), Point(1, 1), Point(1, 2)]),
-  TetrominoDef(3, [Point(0, 0), Point(1, 0), Point(1, 1), Point(1, 2)]),
-  TetrominoDef(3, [Point(0, 2), Point(1, 0), Point(1, 1), Point(1, 2)]),
+  TetrominoDef(4, [GridPos(1, 0), GridPos(1, 1), GridPos(1, 2), GridPos(1, 3)]),
+  TetrominoDef(2, [GridPos(0, 0), GridPos(0, 1), GridPos(1, 0), GridPos(1, 1)]),
+  TetrominoDef(3, [GridPos(0, 1), GridPos(1, 0), GridPos(1, 1), GridPos(1, 2)]),
+  TetrominoDef(3, [GridPos(0, 1), GridPos(0, 2), GridPos(1, 0), GridPos(1, 1)]),
+  TetrominoDef(3, [GridPos(0, 0), GridPos(0, 1), GridPos(1, 1), GridPos(1, 2)]),
+  TetrominoDef(3, [GridPos(0, 0), GridPos(1, 0), GridPos(1, 1), GridPos(1, 2)]),
+  TetrominoDef(3, [GridPos(0, 2), GridPos(1, 0), GridPos(1, 1), GridPos(1, 2)]),
 ];
 
 /// Line-clear scores: 1 line = 100, 2 = 300, 3 = 500, 4 (tetris) = 800,
@@ -59,7 +67,7 @@ class BlockFallLogic {
   final int rows;
   final List<List<int>> grid;
   final Random _random;
-  final List<List<List<Point<int>>>> _rotations = [
+  final List<List<List<GridPos>>> _rotations = [
     for (final def in kTetrominoes) def.rotations(),
   ];
 

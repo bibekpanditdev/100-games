@@ -113,7 +113,7 @@ class _WhackAMoleGameState extends State<WhackAMoleGame> {
     _timer = null;
   }
 
-  void _onTick() {
+  void _onTick([Timer? _]) {
     if (!_interactive) return;
     _logic.advance(_tickMs);
     _pushHud();

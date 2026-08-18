@@ -108,7 +108,7 @@ class _TapReflexGameState extends State<TapReflexGame> {
     _timer = null;
   }
 
-  void _onTick() {
+  void _onTick([Timer? _]) {
     if (!_interactive) return;
     final livesBefore = _logic.lives;
     _logic.advance(_tickMs);

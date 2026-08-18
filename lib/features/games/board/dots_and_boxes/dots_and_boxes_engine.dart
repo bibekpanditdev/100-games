@@ -271,7 +271,7 @@ class _BoardPainter extends CustomPainter {
   final DotsAndBoxesLogic logic;
   final GamePalette palette;
 
-  static const _cpuColor = kPieceColors[5]; // vermillion
+  static final _cpuColor = kPieceColors[5]; // vermillion
 
   @override
   void paint(Canvas canvas, Size size) {

@@ -115,7 +115,7 @@ class _WordSearchGameState extends State<WordSearchGame> {
     );
   }
 
-  void _onTick() {
+  void _onTick([Timer? _]) {
     final session = widget.session;
     if (session.isPaused || session.isFinished || _grid == null) return;
     _remaining -= 1;

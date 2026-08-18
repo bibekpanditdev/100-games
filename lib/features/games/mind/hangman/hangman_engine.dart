@@ -47,7 +47,7 @@ class HangmanGame extends StatefulWidget {
 
 class _HangmanGameState extends State<HangmanGame> {
   static const String _bankPath = 'assets/mind/words/word_bank.json';
-  static const List<String> _letters = [
+  static final List<String> _letters = [
     for (var c = 65; c <= 90; c++) String.fromCharCode(c),
   ];
 

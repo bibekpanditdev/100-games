@@ -77,7 +77,7 @@ class AchievementDef {
 
 int _winIn(GameplaySnapshot s, GameCategory c) => s.categoryWins[c.name] ?? 0;
 
-const List<AchievementDef> kAchievements = [
+final List<AchievementDef> kAchievements = [
   AchievementDef(
     id: 'first_game', title: 'First Steps', iconId: 'play',
     description: 'Play your first game', target: 1,

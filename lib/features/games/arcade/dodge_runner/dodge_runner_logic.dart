@@ -65,6 +65,8 @@ class DodgeRunnerLogic {
 
   bool get survived => elapsedSec >= targetSec;
 
+  bool get won => survived && !_dead;
+
   bool get isOver => _dead || survived;
 
   /// Whole seconds survived, capped at the target.

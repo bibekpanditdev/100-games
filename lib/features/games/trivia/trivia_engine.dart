@@ -30,5 +30,8 @@ class TriviaEngine implements GameEngine {
   bool get supportsHint => true;
 
   @override
+  bool get supportsContinue => false;
+
+  @override
   Widget build(GameSessionController session) => TriviaQuizScreen(session: session);
 }

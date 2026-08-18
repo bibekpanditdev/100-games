@@ -5,6 +5,8 @@
 /// ever communicated by colour alone.
 library;
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 /// Six distinct tile shapes.

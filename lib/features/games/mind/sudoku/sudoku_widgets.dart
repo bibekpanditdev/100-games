@@ -44,6 +44,7 @@ class SudokuBoard extends StatelessWidget {
                           child: _buildCell(r, c, fontSize, notesSize),
                         ),
                     ],
+                  ),
                 ),
             ],
           ),

@@ -248,7 +248,7 @@ void main() {
         final logic = startLogic(bigBank(), qset: 'mixed', count: 20, seed: seed);
         prefixes.addAll(logic.questions.map((q) => q.category));
       }
-      expect(prefixs, containsAll(['alpha', 'beta']));
+      expect(prefixes, containsAll(['alpha', 'beta']));
     });
 
     test('unknown qset falls back to mixed instead of an empty session', () {
