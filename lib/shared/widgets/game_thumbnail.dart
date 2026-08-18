@@ -18,8 +18,6 @@ IconData templateGlyph(String template) => switch (template) {
       'tic_tac_toe' => Icons.grid_3x3_rounded,
       'minesweeper' => Icons.warning_rounded,
       'cloud_glider' => Icons.wb_cloudy_rounded,
-      'connect_four' => Icons.blur_circular_rounded,
-      'dots_and_boxes' => Icons.apps_rounded,
       _ => Icons.videogame_asset_rounded,
     };
 
@@ -43,7 +41,7 @@ class GameThumbnail extends StatelessWidget {
     final palette = paletteById(definition.themeId);
     
     // Using high-quality real images from Unsplash source API.
-    final fallbackUrl = 'https://source.unsplash.com/featured/400x400/?${categoryKeywords(definition.category)},game&${definition.id.hashCode}';
+    final fallbackUrl = 'https://source.unsplash.com/featured/400x400/?${categoryKeywords(definition.category)},game&sig=${definition.id.hashCode}';
 
     return Container(
       width: size,

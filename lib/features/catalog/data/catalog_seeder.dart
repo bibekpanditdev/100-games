@@ -44,10 +44,6 @@ const List<_TemplateSpec> _templates = [
     baseConfig: {'speed': 1.2},
   ),
   _TemplateSpec(
-    template: 'cloud_glider', noun: 'Cloud Glider', category: GameCategory.arcade,
-    baseConfig: {'speed': 1.0},
-  ),
-  _TemplateSpec(
     template: 'match3', noun: 'Jewel', category: GameCategory.puzzle,
     baseConfig: {'cols': 7, 'rows': 7, 'moves': 20, 'target': 2500},
   ),
@@ -64,14 +60,6 @@ const List<_TemplateSpec> _templates = [
     baseConfig: {'aiLevel': 1},
   ),
   _TemplateSpec(
-    template: 'connect_four', noun: 'Connect 4', category: GameCategory.board,
-    baseConfig: {'aiLevel': 1},
-  ),
-  _TemplateSpec(
-    template: 'dots_and_boxes', noun: 'Dots & Boxes', category: GameCategory.board,
-    baseConfig: {'size': 4, 'aiLevel': 1},
-  ),
-  _TemplateSpec(
     template: 'higher_lower', noun: 'Hi-Lo', category: GameCategory.cards,
     baseConfig: {'rounds': 10},
   ),
@@ -86,6 +74,10 @@ const List<_TemplateSpec> _templates = [
   _TemplateSpec(
     template: 'minesweeper', noun: 'Mines', category: GameCategory.mind,
     baseConfig: {'group': 'logic', 'size': 8, 'mines': 10},
+  ),
+  _TemplateSpec(
+    template: 'cloud_glider', noun: 'Cloud Glider', category: GameCategory.arcade,
+    baseConfig: {'speed': 1.0},
   ),
 ];
 
@@ -128,19 +120,19 @@ class CatalogSeeder {
   }
 
   static void _scaleConfig(String template, Map<String, dynamic> config, int level) {
-    final multiplier = 1.0 + (level - 1) * 0.20; // Increased difficulty scaling
+    final multiplier = 1.0 + (level - 1) * 0.20; 
     
     switch (template) {
       case 'snake':
-        config['speed'] = (config['baseConfig']?['speed'] ?? 5.0) * multiplier;
+        config['speed'] = 5.0 * multiplier;
         if (level > 4) config['wrap'] = false;
         break;
       case 'breakout':
-        config['speed'] = (config['baseConfig']?['speed'] ?? 200.0) * multiplier;
-        config['rows'] = (config['baseConfig']?['rows'] ?? 4) + (level ~/ 3);
+        config['speed'] = 200.0 * multiplier;
+        config['rows'] = 4 + (level ~/ 3);
         break;
       case 'dodge_runner':
-        config['speed'] = (config['baseConfig']?['speed'] ?? 180.0) * multiplier;
+        config['speed'] = 180.0 * multiplier;
         if (level > 6) config['lanes'] = 4;
         break;
       case 'merge2048':
@@ -153,15 +145,7 @@ class CatalogSeeder {
         config['target'] = (2500 * multiplier).round();
         break;
       case 'tic_tac_toe':
-        // Make it hard FAST. Level 1 is easy, Level 2 is medium, Level 3+ is UNBEATABLE minimax.
         config['aiLevel'] = level == 1 ? 1 : (level == 2 ? 2 : 3);
-        break;
-      case 'connect_four':
-        config['aiLevel'] = level <= 2 ? 1 : (level <= 5 ? 2 : 3);
-        break;
-      case 'dots_and_boxes':
-        config['size'] = 4 + (level ~/ 4);
-        config['aiLevel'] = level <= 3 ? 1 : (level <= 7 ? 2 : 3);
         break;
       case 'higher_lower':
         config['rounds'] = 10 + (level * 2);
