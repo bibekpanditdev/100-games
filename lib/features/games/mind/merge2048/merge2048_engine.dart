@@ -149,7 +149,7 @@ class _Merge2048GameState extends State<Merge2048Game> {
             height: boardSize,
             padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
-              color: palette.boardA.withOpacity(0.2),
+              color: palette.boardA.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: palette.boardA, width: 2),
             ),
@@ -192,7 +192,7 @@ class _Merge2048GameState extends State<Merge2048Game> {
           Text(
             'TILT TO MOVE',
             style: TextStyle(
-              color: palette.foreground.withOpacity(0.5),
+              color: palette.foreground.withValues(alpha: 0.5),
               fontWeight: FontWeight.bold,
               letterSpacing: 2,
               fontSize: 12,
@@ -220,7 +220,7 @@ class _Merge2048GameState extends State<Merge2048Game> {
   Widget _arrowBtn(IconData icon, VoidCallback onTap) => Container(
         margin: const EdgeInsets.all(4),
         decoration: BoxDecoration(
-          color: widget.session.palette.boardA.withOpacity(0.1),
+          color: widget.session.palette.boardA.withValues(alpha: 0.1),
           shape: BoxShape.circle,
         ),
         child: IconButton(
@@ -236,7 +236,7 @@ class _Merge2048GameState extends State<Merge2048Game> {
         key: key,
         margin: const EdgeInsets.all(4),
         decoration: BoxDecoration(
-          color: palette.boardA.withOpacity(0.1),
+          color: palette.boardA.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(8),
         ),
       );
@@ -254,7 +254,7 @@ class _Merge2048GameState extends State<Merge2048Game> {
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: Colors.black.withValues(alpha: 0.2),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -268,7 +268,7 @@ class _Merge2048GameState extends State<Merge2048Game> {
           fontWeight: FontWeight.w900,
           color: fg,
           shadows: [
-            Shadow(color: Colors.black.withOpacity(0.3), offset: const Offset(1, 1), blurRadius: 1),
+            Shadow(color: Colors.black.withValues(alpha: 0.3), offset: const Offset(1, 1), blurRadius: 1),
           ],
         ),
       ),

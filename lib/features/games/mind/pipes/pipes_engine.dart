@@ -248,13 +248,13 @@ class _PipesGameState extends State<PipesGame> {
         ? GamePalette.contrastOn(palette.accent)
         : (live
             ? palette.accent
-            : GamePalette.contrastOn(palette.boardB).withOpacity(0.4));
+            : GamePalette.contrastOn(palette.boardB).withValues(alpha: 0.4));
     final markerColor = isSource
         ? GamePalette.contrastOn(palette.accent)
         : isEndpoint
             ? (live
                 ? kPieceColors[2]
-                : GamePalette.contrastOn(palette.boardB).withOpacity(0.5))
+                : GamePalette.contrastOn(palette.boardB).withValues(alpha: 0.5))
             : GamePalette.contrastOn(live ? palette.accent : palette.boardB);
 
     return MindGridCell(

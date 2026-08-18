@@ -260,7 +260,7 @@ class _ConnectFourGameState extends State<ConnectFourGame> {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          color: hinted ? GamePalette.contrastOn(widget.session.palette.accent).withOpacity(0.15) : null,
+          color: hinted ? GamePalette.contrastOn(widget.session.palette.accent).withValues(alpha: 0.15) : null,
         ),
         child: Column(
           children: [

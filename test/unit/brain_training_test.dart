@@ -96,10 +96,10 @@ void main() {
 
   test('history streak counts consecutive recorded days', () {
     final days = [
-      BrainScoreDay(day: '2026-08-19', score: 100, completed: 5),
-      BrainScoreDay(day: '2026-08-18', score: 200, completed: 5),
-      BrainScoreDay(day: '2026-08-17', score: 300, completed: 4),
-      BrainScoreDay(day: '2026-08-14', score: 400, completed: 5),
+      const BrainScoreDay(day: '2026-08-19', score: 100, completed: 5),
+      const BrainScoreDay(day: '2026-08-18', score: 200, completed: 5),
+      const BrainScoreDay(day: '2026-08-17', score: 300, completed: 4),
+      const BrainScoreDay(day: '2026-08-14', score: 400, completed: 5),
     ];
     expect(brain.historyStreak(days, now: DateTime(2026, 8, 19)), 3);
     expect(brain.historyStreak(days, now: DateTime(2026, 8, 20)), 3);

@@ -51,7 +51,7 @@ class GameDetailScreen extends ConsumerWidget {
           onAction: () => ref.invalidate(gameByIdProvider(gameId)),
         ),
         data: (game) => game == null
-            ? EmptyState(
+            ? const EmptyState(
                 icon: Icons.videogame_asset_outlined,
                 title: 'Game not found',
                 message: 'This game is no longer in the catalog.',
@@ -135,7 +135,7 @@ class _DetailBody extends ConsumerWidget {
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     color: theme.colorScheme.surfaceContainerHighest
-                        .withOpacity(0.5),
+                        .withValues(alpha: 0.5),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Row(

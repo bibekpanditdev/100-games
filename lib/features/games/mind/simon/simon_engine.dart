@@ -297,7 +297,7 @@ class _SimonGameState extends State<SimonGame> {
           child: AnimatedContainer(
             duration: Duration(milliseconds: flashing ? 40 : 160),
             decoration: BoxDecoration(
-              color: flashing ? color : palette.boardB.withOpacity(0.9),
+              color: flashing ? color : palette.boardB.withValues(alpha: 0.9),
               borderRadius: BorderRadius.circular(radius),
               border: Border.all(color: color, width: flashing ? 0 : 6),
             ),

@@ -295,7 +295,7 @@ class _BoardPainter extends CustomPainter {
           width: step * 0.7,
           height: step * 0.7,
         );
-        canvas.drawRect(rect, Paint()..color = color.withOpacity(0.18));
+        canvas.drawRect(rect, Paint()..color = color.withValues(alpha: 0.18));
         final mark = Paint()
           ..color = color
           ..style = PaintingStyle.stroke

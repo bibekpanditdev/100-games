@@ -27,7 +27,7 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
+    return const Scaffold(
       body: SafeArea(
         bottom: false,
         child: Column(
@@ -40,7 +40,7 @@ class HomeScreen extends ConsumerWidget {
         ),
       ),
       // Collapses to zero height when no ad is available.
-      bottomNavigationBar: const BannerAdSlot(),
+      bottomNavigationBar: BannerAdSlot(),
     );
   }
 }
@@ -169,7 +169,7 @@ class _ViewAllCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Material(
-      color: theme.colorScheme.surfaceContainerHighest.withOpacity(0.35),
+      color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.35),
       elevation: 1,
       borderRadius: BorderRadius.circular(14),
       clipBehavior: Clip.antiAlias,

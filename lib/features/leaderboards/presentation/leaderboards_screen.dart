@@ -289,7 +289,7 @@ class _ScoreRow extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         decoration: BoxDecoration(
-          color: scheme.surfaceContainerHighest.withOpacity(0.35),
+          color: scheme.surfaceContainerHighest.withValues(alpha: 0.35),
           borderRadius: BorderRadius.circular(14),
         ),
         child: Row(

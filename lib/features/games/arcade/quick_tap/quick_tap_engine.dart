@@ -120,7 +120,7 @@ class _QuickTapGameState extends State<QuickTapGame> {
                           color: widget.session.palette.accent,
                           shape: BoxShape.circle,
                           boxShadow: [
-                            BoxShadow(color: widget.session.palette.accent.withOpacity(0.5), blurRadius: 10),
+                            BoxShadow(color: widget.session.palette.accent.withValues(alpha: 0.5), blurRadius: 10),
                           ],
                         ),
                       ),

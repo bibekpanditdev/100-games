@@ -238,7 +238,7 @@ class _MinesweeperGameState extends State<MinesweeperGame> {
             color: background,
             borderRadius: BorderRadius.circular(4),
             border: revealed ? null : Border.fromBorderSide(
-              BorderSide(color: GamePalette.contrastOn(palette.boardB).withOpacity(0.15)),
+              BorderSide(color: GamePalette.contrastOn(palette.boardB).withValues(alpha: 0.15)),
             ),
           ),
           alignment: Alignment.center,

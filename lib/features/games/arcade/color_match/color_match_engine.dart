@@ -90,7 +90,7 @@ class _ColorMatchGameState extends State<ColorMatchGame> {
             decoration: BoxDecoration(
               color: _targetColor,
               shape: BoxShape.circle,
-              boxShadow: [BoxShadow(color: _targetColor.withOpacity(0.5), blurRadius: 20)],
+              boxShadow: [BoxShadow(color: _targetColor.withValues(alpha: 0.5), blurRadius: 20)],
             ),
           ),
           const SizedBox(height: 60),

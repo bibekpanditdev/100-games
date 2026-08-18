@@ -275,7 +275,7 @@ class _OddOneOutGameState extends State<OddOneOutGame> {
                     ? Border.all(color: palette.accent, width: 4)
                     : Border.all(
                         color:
-                            GamePalette.contrastOn(palette.boardA).withOpacity(0.1),
+                            GamePalette.contrastOn(palette.boardA).withValues(alpha: 0.1),
                       ),
               ),
               child: Padding(

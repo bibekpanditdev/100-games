@@ -298,7 +298,7 @@ class _PatternRecallGameState extends State<PatternRecallGame> {
                   ? null
                   : Border.all(
                       color: GamePalette.contrastOn(palette.boardB)
-                          .withOpacity(0.15),
+                          .withValues(alpha: 0.15),
                     ),
             ),
             child: icon == null

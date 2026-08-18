@@ -69,26 +69,26 @@ void main() {
     final game = _game('g3', GameCategory.arcade);
     await scores.record(game: game, score: 1500, stars: 3);
 
-    final firstRun = await svc.applyAndCollectUnlocked(GameResultInput(
+    final firstRun = await svc.applyAndCollectUnlocked(const GameResultInput(
       category: GameCategory.arcade,
       template: 'snake',
       won: true,
       score: 1500,
       stars: 3,
-      stats: const {'length': 31},
+      stats: {'length': 31},
     ));
 
     final ids = firstRun.map((a) => a.id).toSet();
     expect(ids, containsAll(['first_game', 'first_win', 'arcade_1000', 'snake_charmer']));
 
     // Same result again unlocks nothing new.
-    final secondRun = await svc.applyAndCollectUnlocked(GameResultInput(
+    final secondRun = await svc.applyAndCollectUnlocked(const GameResultInput(
       category: GameCategory.arcade,
       template: 'snake',
       won: true,
       score: 1500,
       stars: 3,
-      stats: const {'length': 31},
+      stats: {'length': 31},
     ));
     expect(secondRun, isEmpty);
 

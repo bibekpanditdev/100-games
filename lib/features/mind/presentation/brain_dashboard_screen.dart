@@ -238,7 +238,7 @@ class _HistoryChart extends StatelessWidget {
                   points: points.map((d) => d.score).toList(),
                   max: maxScore * 1.15,
                   line: theme.colorScheme.primary,
-                  fill: theme.colorScheme.primary.withOpacity(0.12),
+                  fill: theme.colorScheme.primary.withValues(alpha: 0.12),
                   grid: theme.colorScheme.surfaceContainerHighest,
                 ),
                 child: Semantics(

@@ -366,7 +366,7 @@ class _MazePainter extends CustomPainter {
 
     // Solid rock.
     final wallPaint = Paint()
-      ..color = GamePalette.contrastOn(palette.boardA).withOpacity(0.85);
+      ..color = GamePalette.contrastOn(palette.boardA).withValues(alpha: 0.85);
     for (var wy = 0; wy < dim; wy++) {
       for (var wx = 0; wx < dim; wx++) {
         if (logic.isWall(wx, wy)) {
@@ -381,7 +381,7 @@ class _MazePainter extends CustomPainter {
     // Hint flash: sky-blue dots on the next steps.
     final hints = hintCells;
     if (hints != null) {
-      final hintPaint = Paint()..color = kPieceColors[4].withOpacity(0.9);
+      final hintPaint = Paint()..color = kPieceColors[4].withValues(alpha: 0.9);
       for (final (hx, hy) in hints) {
         canvas.drawCircle(
           Offset((hx * 2 + 1.5) * cell, (hy * 2 + 1.5) * cell),

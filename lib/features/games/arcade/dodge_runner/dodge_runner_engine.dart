@@ -366,7 +366,7 @@ class _DodgeTrackPainter extends CustomPainter {
     canvas.drawCircle(Offset(pos.dx + size.width * 0.78, pos.dy + size.height * 0.3), 4, lightPaint);
 
     // 5. Wheels (Sides)
-    final wheelColor = const Color(0xFF1A1A1A);
+    const wheelColor = Color(0xFF1A1A1A);
     canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(pos.dx - 2, pos.dy + size.height * 0.65, 6, size.height * 0.2), const Radius.circular(2)), Paint()..color = wheelColor);
     canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(pos.dx + size.width - 4, pos.dy + size.height * 0.65, 6, size.height * 0.2), const Radius.circular(2)), Paint()..color = wheelColor);
   }

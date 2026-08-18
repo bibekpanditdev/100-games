@@ -215,10 +215,9 @@ class _WordSearchGameState extends State<WordSearchGame> {
   }
 
   void _updateDragTo(int cellIndex) {
-    final grid = _grid;
     final anchor = _dragAnchor;
-    if (grid == null || anchor == null) return;
-    final line = grid.snapLine(
+    if (_grid == null || anchor == null) return;
+    final line = _grid!.snapLine(
       anchor ~/ _size,
       anchor % _size,
       cellIndex ~/ _size,

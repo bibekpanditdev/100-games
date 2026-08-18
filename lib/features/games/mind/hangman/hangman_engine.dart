@@ -197,7 +197,7 @@ class _HangmanGameState extends State<HangmanGame> {
                 size: size,
                 color: i < logic.lives
                     ? kPieceColors[5]
-                    : Theme.of(context).colorScheme.onSurface.withOpacity(0.38),
+                    : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.38),
               ),
             ),
         ],
@@ -309,7 +309,7 @@ class _HangmanGameState extends State<HangmanGame> {
       fg = GamePalette.contrastOn(bg);
       stateLabel = ', in the word';
     } else if (tried) {
-      bg = theme.colorScheme.surfaceContainerHighest.withOpacity(0.6);
+      bg = theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.6);
       fg = disabled;
       decoration = TextDecoration.lineThrough;
       stateLabel = ', already tried';

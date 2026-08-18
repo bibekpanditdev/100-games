@@ -68,7 +68,7 @@ class _DailyCard extends StatelessWidget {
                       vertical: 3,
                     ),
                     decoration: BoxDecoration(
-                      color: onAccent.withOpacity(0.22),
+                      color: onAccent.withValues(alpha: 0.22),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Row(
@@ -100,7 +100,7 @@ class _DailyCard extends StatelessWidget {
                   Text(
                     '${definition.category.label} • ${definition.difficulty.label}',
                     style: theme.textTheme.bodySmall?.copyWith(
-                      color: onAccent.withOpacity(0.85),
+                      color: onAccent.withValues(alpha: 0.85),
                     ),
                   ),
                 ],

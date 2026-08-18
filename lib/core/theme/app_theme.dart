@@ -25,7 +25,7 @@ abstract final class AppColors {
 }
 
 ThemeData buildLightTheme() {
-  final scheme = ColorScheme.light(
+  const scheme = ColorScheme.light(
     primary: AppColors.primaryLight,
     onPrimary: AppColors.onPrimaryLight,
     secondary: AppColors.secondaryLight,
@@ -37,7 +37,7 @@ ThemeData buildLightTheme() {
 }
 
 ThemeData buildDarkTheme() {
-  final scheme = ColorScheme.dark(
+  const scheme = ColorScheme.dark(
     primary: AppColors.primaryDark,
     onPrimary: AppColors.onPrimaryDark,
     secondary: AppColors.secondaryDark,
