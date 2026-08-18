@@ -95,14 +95,17 @@ class TicTacToeLogic {
   List<int> _emptyCells() =>
       [for (var i = 0; i < 9; i++) if (board[i] == 0) i];
 
-  /// Easy: 30% perfect, otherwise a random empty cell.
+  /// Easy: 10% perfect, otherwise random.
   int _easyMove() {
-    if (_random.nextInt(100) < 30) return _bestMove(cpu);
+    if (_random.nextInt(100) < 10) return _bestMove(cpu);
     return _randomChoice();
   }
 
-  /// Medium: win if possible, block if needed, else random.
-  int _mediumMove() => _winningSpot(cpu) ?? _winningSpot(player) ?? _randomChoice();
+  /// Medium: 95% perfect. This makes it very hard but occasionally allows a mistake.
+  int _mediumMove() {
+    if (_random.nextInt(100) < 95) return _bestMove(cpu);
+    return _winningSpot(cpu) ?? _winningSpot(player) ?? _randomChoice();
+  }
 
   int _randomChoice() => _emptyCells()[_random.nextInt(_emptyCells().length)];
 

@@ -3,7 +3,10 @@ library;
 
 import '../../game_player/game_contracts.dart';
 import 'breakout/breakout_engine.dart';
+import 'cloud_glider/cloud_glider_engine.dart';
+import 'color_match/color_match_engine.dart';
 import 'dodge_runner/dodge_runner_engine.dart';
+import 'quick_tap/quick_tap_engine.dart';
 import 'snake/snake_engine.dart';
 import 'tap_reflex/tap_reflex_engine.dart';
 import 'whack_a_mole/whack_a_mole_engine.dart';
@@ -15,4 +18,7 @@ List<GameEngine> buildArcadeEngines() => const [
       WhackAMoleEngine(),
       TapReflexEngine(),
       DodgeRunnerEngine(),
+      ColorMatchEngine(),
+      QuickTapEngine(),
+      CloudGliderEngine(),
     ];

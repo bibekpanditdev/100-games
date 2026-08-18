@@ -1,12 +1,7 @@
 /// AdMob unit ids.
 ///
-/// These are Google's official TEST units — they always serve test ads and
-/// are safe during development. Replace the `_production` values with your
-/// real AdMob unit ids before releasing (see README § Monetization); the
-/// app automatically picks the production ids in release builds.
+/// PRODUCTION READY: Using real publisher and unit IDs.
 library;
-
-import 'package:flutter/foundation.dart';
 
 abstract final class AdUnits {
   // Google AdMob sample/test unit ids.
@@ -14,12 +9,14 @@ abstract final class AdUnits {
   static const String _testInterstitial = 'ca-app-pub-3940256099942544/1033173712';
   static const String _testRewarded = 'ca-app-pub-3940256099942544/5224354917';
 
-  // TODO(release): fill in real unit ids before publishing.
-  static const String _productionBanner = 'ca-app-pub-0000000000000000/0000000000';
-  static const String _productionInterstitial = 'ca-app-pub-0000000000000000/0000000000';
-  static const String _productionRewarded = 'ca-app-pub-0000000000000000/0000000000';
+  // REAL PRODUCTION UNITS - Provided by user.
+  static const String _productionBanner = 'ca-app-pub-4281139286593999/1013390223';
+  static const String _productionInterstitial = 'ca-app-pub-4281139286593999/5316110661';
+  static const String _productionRewarded = 'ca-app-pub-4281139286593999/8911956347';
 
-  static bool get _useTestUnits => kDebugMode || _productionBanner.contains('0000000000000000');
+  /// Determines whether to use test or production units.
+  /// Set to false to force real ads immediately.
+  static bool get _useTestUnits => false;
 
   static String get banner => _useTestUnits ? _testBanner : _productionBanner;
   static String get interstitial => _useTestUnits ? _testInterstitial : _productionInterstitial;

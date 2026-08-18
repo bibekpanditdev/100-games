@@ -300,49 +300,79 @@ class _DodgeTrackPainter extends CustomPainter {
     final board = logic;
     if (board == null) return;
 
-    // Obstacles.
+    // Obstacles: Draw as simple modern "boxes" or "blocks" with shadows
     final obstacleHeight = DodgeRunnerLogic.obstacleHeight * size.height;
+    final shadowPaint = Paint()
+      ..color = Colors.black.withOpacity(0.3)
+      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 4);
+
     for (final obstacle in board.obstacles) {
       final color = kPieceColors[obstacle.colorIndex % kPieceColors.length];
       final rect = Rect.fromLTWH(
-        obstacle.lane * laneWidth + laneWidth * 0.12,
+        obstacle.lane * laneWidth + laneWidth * 0.15,
         obstacle.y * size.height,
-        laneWidth * 0.76,
+        laneWidth * 0.70,
         obstacleHeight,
       );
+      
+      // Draw Obstacle as a "Crate" for realistic arcade feel
+      canvas.drawRRect(RRect.fromRectAndRadius(rect, const Radius.circular(4)), Paint()..color = const Color(0xFF5D4037));
       canvas.drawRRect(
-        RRect.fromRectAndRadius(rect, const Radius.circular(6)),
-        Paint()..color = color,
+        RRect.fromRectAndRadius(rect.deflate(4), const Radius.circular(2)),
+        Paint()..color = color.withOpacity(0.8),
       );
-      canvas.drawRRect(
-        RRect.fromRectAndRadius(rect, const Radius.circular(6)),
-        Paint()
-          ..color = GamePalette.contrastOn(color)
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 1.5,
-      );
+      // Crate "X" detail
+      final pX = Paint()..color = Colors.black.withOpacity(0.2)..style = PaintingStyle.stroke..strokeWidth = 2;
+      canvas.drawLine(rect.topLeft, rect.bottomRight, pX);
+      canvas.drawLine(rect.topRight, rect.bottomLeft, pX);
     }
 
-    // Player at the bottom in the accent colour.
+    // Player: HIGH QUALITY CAR MODEL
     final playerTop = DodgeRunnerLogic.playerY * size.height;
     final playerHeight = DodgeRunnerLogic.playerHeight * size.height;
-    final playerRect = Rect.fromLTWH(
-      board.playerLane * laneWidth + laneWidth * 0.14,
-      playerTop,
-      laneWidth * 0.72,
-      playerHeight,
-    );
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(playerRect, const Radius.circular(6)),
-      Paint()..color = palette.accent,
-    );
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(playerRect, const Radius.circular(6)),
-      Paint()
-        ..color = GamePalette.contrastOn(palette.accent)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 2,
-    );
+    final pWidth = laneWidth * 0.7;
+    final pLeft = board.playerLane * laneWidth + (laneWidth - pWidth) / 2;
+    
+    _drawRealisticCar(canvas, Offset(pLeft, playerTop), Size(pWidth, playerHeight), palette.accent);
+  }
+
+  void _drawRealisticCar(Canvas canvas, Offset pos, Size size, Color color) {
+    final paint = Paint()..color = color..style = PaintingStyle.fill;
+    final glassPaint = Paint()..color = Colors.black.withOpacity(0.6);
+    final lightPaint = Paint()..color = Colors.white..maskFilter = const MaskFilter.blur(BlurStyle.normal, 3);
+    final shadowPaint = Paint()..color = Colors.black.withOpacity(0.3)..maskFilter = const MaskFilter.blur(BlurStyle.normal, 5);
+
+    // 1. Shadow
+    canvas.drawRRect(RRect.fromRectAndRadius((pos & size).shift(const Offset(4, 4)), const Radius.circular(10)), shadowPaint);
+
+    // 2. Main Body (Aerodynamic)
+    final body = Path()
+      ..moveTo(pos.dx + size.width * 0.1, pos.dy + size.height * 0.9)
+      ..lineTo(pos.dx + size.width * 0.9, pos.dy + size.height * 0.9)
+      ..lineTo(pos.dx + size.width * 0.95, pos.dy + size.height * 0.4)
+      ..lineTo(pos.dx + size.width * 0.8, pos.dy + size.height * 0.2)
+      ..lineTo(pos.dx + size.width * 0.2, pos.dy + size.height * 0.2)
+      ..lineTo(pos.dx + size.width * 0.05, pos.dy + size.height * 0.4)
+      ..close();
+    canvas.drawPath(body, paint);
+
+    // 3. Cabin / Windshield
+    final cabin = Path()
+      ..moveTo(pos.dx + size.width * 0.25, pos.dy + size.height * 0.4)
+      ..lineTo(pos.dx + size.width * 0.75, pos.dy + size.height * 0.4)
+      ..lineTo(pos.dx + size.width * 0.65, pos.dy + size.height * 0.22)
+      ..lineTo(pos.dx + size.width * 0.35, pos.dy + size.height * 0.22)
+      ..close();
+    canvas.drawPath(cabin, glassPaint);
+
+    // 4. Headlights (Bright white)
+    canvas.drawCircle(Offset(pos.dx + size.width * 0.22, pos.dy + size.height * 0.3), 4, lightPaint);
+    canvas.drawCircle(Offset(pos.dx + size.width * 0.78, pos.dy + size.height * 0.3), 4, lightPaint);
+
+    // 5. Wheels (Sides)
+    final wheelColor = const Color(0xFF1A1A1A);
+    canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(pos.dx - 2, pos.dy + size.height * 0.65, 6, size.height * 0.2), const Radius.circular(2)), Paint()..color = wheelColor);
+    canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(pos.dx + size.width - 4, pos.dy + size.height * 0.65, 6, size.height * 0.2), const Radius.circular(2)), Paint()..color = wheelColor);
   }
 
   @override

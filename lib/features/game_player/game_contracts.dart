@@ -144,7 +144,11 @@ class GameSessionController extends ChangeNotifier {
       detail: detail,
       progress: progress,
     );
-    notifyListeners();
+    // Use a microtask to avoid "setState() or markNeedsBuild() called during build"
+    // when engines call this in initState or build.
+    Future.microtask(() {
+      if (!_finished) notifyListeners();
+    });
   }
 
   void addScore(int points) => updateHud(score: _hud.score + points);

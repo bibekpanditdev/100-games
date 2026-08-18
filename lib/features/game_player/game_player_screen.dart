@@ -1,30 +1,27 @@
-/// In-game shell: hosts one engine instance plus the shared HUD, pause
-/// menu, exit confirmation, hint/continue payment flow, score recording,
-/// achievements and the results hand-off. Engines never see any of this —
-/// they only talk to their [GameSessionController].
+/// Full-screen gameplay host.
 library;
+
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/routing.dart';
-import '../../core/services/audio_service.dart';
-import '../../core/services/feedback.dart';
-import '../ads/ads_service.dart';
+import '../../../core/services/audio_service.dart';
+import '../../../core/services/feedback.dart';
 import '../catalog/domain/game_definition.dart';
 import '../catalog/presentation/catalog_providers.dart';
 import '../gamification/achievements/achievements_repository.dart';
 import '../gamification/progress_controller.dart';
-import '../gamification/scoring.dart';
-import '../leaderboards/scores_repository.dart';
-import '../mind/brain_training/brain_providers.dart';
-import '../../shared/widgets/app_dialogs.dart';
 import 'engine_registry.dart';
 import 'game_contracts.dart';
 import 'results_payload.dart';
+import 'results_screen.dart';
 
 class GamePlayerScreen extends ConsumerStatefulWidget {
-  const GamePlayerScreen({super.key, required this.gameId});
+  const GamePlayerScreen({
+    super.key,
+    required this.gameId,
+  });
 
   final String gameId;
 
@@ -33,223 +30,159 @@ class GamePlayerScreen extends ConsumerStatefulWidget {
 }
 
 class _GamePlayerScreenState extends ConsumerState<GamePlayerScreen> {
+  GameSessionController? _session;
   GameDefinition? _definition;
   GameEngine? _engine;
-  GameSessionController? _session;
   int _runKey = 0;
-  bool _finishing = false;
   bool _loading = true;
+  bool _showIntro = true;
 
   @override
   void initState() {
     super.initState();
-    _load();
+    _loadGame();
   }
 
-  Future<void> _load() async {
-    final def = await ref.read(catalogRepoProvider).byId(widget.gameId);
+  Future<void> _loadGame() async {
+    final def = await ref.read(gameByIdProvider(widget.gameId).future);
     if (!mounted) return;
+    
     if (def == null) {
       setState(() => _loading = false);
       return;
     }
-    _startSession(def);
-    setState(() => _loading = false);
-    ref.read(analyticsProvider).log('game_start', {'template': def.template, 'game': def.id});
-  }
 
-  void _startSession(GameDefinition def) {
     final engine = engineFor(def.template);
-    final session = GameSessionController(definition: def);
-
-    // Save/resume for long puzzles (Sudoku & friends): restore a previous
-    // run's board, persist on every saveState() call, wipe on finish.
-    final stateBox = ref.read(gameStateBoxProvider);
-    final saved = stateBox.get(def.id);
-    session.attachStatePersister(
-      restored: saved is Map ? Map<String, dynamic>.from(saved) : null,
-      save: (state) => stateBox.put(def.id, state),
-      clear: () => stateBox.delete(def.id),
-    );
-
-    session.attachSupportHandlers(
-      hint: () => _payAndGrant(
-        cost: ProgressController.hintCost,
-        onGranted: session.grantHint,
-        unavailableMessage: 'No hints available right now.',
-      ),
-      continueRequest: () => _payAndGrant(
-        cost: ProgressController.extraLifeCost,
-        onGranted: session.grantExtraLife,
-        unavailableMessage: 'No continues available right now.',
-      ),
-    );
-    session.addListener(_onSessionChanged);
-    AudioService.I.playBgm(AudioService.bgmForCategory(def.category.name));
     setState(() {
       _definition = def;
       _engine = engine;
-      _session = session;
-      _runKey++;
+      _loading = false;
+      if (engine != null) _initSession(def);
+    });
+
+    // Hide intro after delay.
+    Future.delayed(const Duration(milliseconds: 1800), () {
+      if (mounted) setState(() => _showIntro = false);
     });
   }
 
-  /// Payment flow shared by hints and continues: coins first, rewarded ad
-  /// as fallback, friendly decline when neither is possible (offline).
-  Future<bool> _payAndGrant({
-    required int cost,
-    required VoidCallback onGranted,
-    required String unavailableMessage,
-  }) async {
-    final progress = ref.read(progressProvider);
-    if (progress.spendCoins(cost)) {
-      onGranted();
-      return true;
-    }
-    final earned = await AdsService.instance.showRewarded();
-    if (earned) {
-      onGranted();
-      return true;
-    }
-    if (mounted) {
-      ScaffoldMessenger.of(context)
-        ..hideCurrentSnackBar()
-        ..showSnackBar(SnackBar(content: Text(unavailableMessage)));
-    }
-    return false;
+  void _initSession(GameDefinition def) {
+    _session?.removeListener(_onSessionChanged);
+    _session?.dispose();
+    
+    final session = GameSessionController(definition: def);
+    session.attachSupportHandlers(
+      hint: () async {
+        final progress = ref.read(progressProvider);
+        if (progress.spendCoins(ProgressController.hintCost)) {
+          AppFeedback.coin();
+          return true;
+        }
+        return false;
+      },
+      continueRequest: () async {
+        final progress = ref.read(progressProvider);
+        if (progress.spendCoins(ProgressController.extraLifeCost)) {
+          AppFeedback.coin();
+          return true;
+        }
+        return false;
+      },
+    );
+    
+    session.addListener(_onSessionChanged);
+    _session = session;
+    
+    ref.read(progressProvider).recordPlay(def.id);
+    AudioService.I.playBgm(AudioService.bgmForCategory(def.category.name));
   }
 
   void _onSessionChanged() {
     final session = _session;
-    if (session == null || !session.isFinished || _finishing) return;
-    _finishing = true;
-    WidgetsBinding.instance.addPostFrameCallback((_) => _handleFinish(session));
+    if (session != null && session.isFinished) {
+      _finishSession(session);
+    }
+    if (mounted) setState(() {});
   }
 
-  Future<void> _handleFinish(GameSessionController session) async {
+  Future<void> _finishSession(GameSessionController session) async {
     final def = _definition!;
-    final outcome = session.outcome!;
-    final stars = Scoring.starsFor(
-      score: outcome.score,
-      won: outcome.won,
-      difficulty: def.difficulty,
-      target: def.config['target'] is int ? def.config['target'] as int : null,
-    );
-    final coins = Scoring.coinsFor(
-      score: outcome.score,
-      won: outcome.won,
-      difficulty: def.difficulty,
-    );
+    
+    final stars = session.outcome?.won == true ? (session.score > 1000 ? 3 : 2) : 1;
+    final coins = stars * 50;
 
-    final scores = ref.read(scoresRepoProvider);
-    final previousBest = await scores.bestForGame(def.id);
-    await scores.record(game: def, score: outcome.score, stars: stars);
-    session.clearSavedState();
-
+    final scoresRepo = ref.read(scoresRepoProvider);
+    final previousBest = await scoresRepo.bestForGame(def.id);
+    
+    await scoresRepo.record(game: def, score: session.score, stars: stars);
+    
     final progress = ref.read(progressProvider);
-    progress.recordPlay(def.id);
-    progress.touchDailyStreak();
     progress.earnCoins(coins);
     progress.recordResultForAdaptive(def.template, stars);
+    progress.touchDailyStreak();
 
-    // Daily Brain Training bookkeeping (no-op for non-routine games).
-    ref.read(brainTrainingProvider).refreshDay(DateTime.now());
-
-    final unlocked = await ref
-        .read(achievementsServiceProvider)
-        .applyAndCollectUnlocked(GameResultInput(
-          category: def.category,
-          template: def.template,
-          won: outcome.won,
-          score: outcome.score,
-          stars: stars,
-          stats: outcome.stats,
-        ));
-
-    ref.read(analyticsProvider).log('game_finish', {
-      'template': def.template,
-      'category': def.category.name,
-      'score': outcome.score,
-      'won': outcome.won,
-    });
+    final newAchievements = await ref.read(achievementsServiceProvider).applyAndCollectUnlocked(
+      GameResultInput(
+        category: def.category,
+        template: def.template,
+        won: session.outcome?.won ?? false,
+        score: session.score,
+        stars: stars,
+        stats: session.outcome?.stats ?? {},
+      ),
+    );
 
     if (!mounted) return;
-    Navigator.of(context).pushReplacementNamed(
-      Routes.results,
-      arguments: ResultsPayload(
-        definition: def,
-        outcome: outcome,
-        stars: stars,
-        coinsEarned: coins,
-        previousBest: previousBest?.score,
-        newAchievements: unlocked,
+
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (_) => ResultsScreen(
+          payload: ResultsPayload(
+            definition: def,
+            outcome: session.outcome!,
+            stars: stars,
+            coinsEarned: coins,
+            previousBest: previousBest?.score,
+            newAchievements: newAchievements,
+          ),
+        ),
       ),
     );
   }
 
+  void _quit() {
+    AppFeedback.tap();
+    Navigator.of(context).pop();
+  }
+
   void _restart() {
-    final def = _definition;
-    if (def == null) return;
-    setState(() => _finishing = false);
-    _startSession(def);
-  }
-
-  Future<void> _quit() async {
-    final confirmed = await AppDialogs.confirm(
-      context: context,
-      title: 'Quit game?',
-      message: 'Your current progress in this run will be lost.',
-      confirmLabel: 'Quit',
-    );
-    if (!confirmed || !mounted) return;
-    _session?.setPaused(true);
-    _leaveGame();
-  }
-
-  /// Back to home; frequency-capped interstitial on the way out.
-  void _leaveGame() {
-    final progress = ref.read(progressProvider);
-    progress.noteGameExit();
-    AudioService.I.playBgm('menu_loop');
-    Navigator.of(context).popUntil((r) => r.isFirst);
-    if (progress.shouldShowInterstitial()) {
-      progress.noteInterstitialShown();
-      AdsService.instance.showInterstitial(() {});
-    }
+    AppFeedback.tap();
+    setState(() {
+      _runKey++;
+      _initSession(_definition!);
+    });
   }
 
   @override
   void dispose() {
-    AudioService.I.playBgm('menu_loop');
     _session?.removeListener(_onSessionChanged);
+    _session?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
+    
     if (_loading) {
-      return Scaffold(
-        backgroundColor: theme.colorScheme.surface,
-        body: const Center(child: CircularProgressIndicator()),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
     final def = _definition;
     if (def == null) {
       return Scaffold(
         appBar: AppBar(title: const Text('Game not found')),
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Text(
-              'This game is not in the catalog. It may have been removed from a custom manifest.',
-              style: theme.textTheme.bodyLarge,
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ),
+        body: const Center(child: Text('Game not found in catalog.')),
       );
     }
 
@@ -257,23 +190,7 @@ class _GamePlayerScreenState extends ConsumerState<GamePlayerScreen> {
     if (engine == null) {
       return Scaffold(
         appBar: AppBar(title: Text(def.title)),
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.extension_off, size: 56, color: theme.colorScheme.error),
-                const SizedBox(height: 12),
-                Text(
-                  'Unknown game template "${def.template}".',
-                  style: theme.textTheme.bodyLarge,
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          ),
-        ),
+        body: Center(child: Text('Unknown template "${def.template}"')),
       );
     }
 
@@ -286,9 +203,7 @@ class _GamePlayerScreenState extends ConsumerState<GamePlayerScreen> {
         if (!didPop) _quit();
       },
       child: Scaffold(
-        backgroundColor: theme.brightness == Brightness.dark
-            ? palette.backgroundDark
-            : palette.backgroundLight,
+        backgroundColor: theme.brightness == Brightness.dark ? palette.backgroundDark : palette.backgroundLight,
         body: SafeArea(
           child: AnimatedBuilder(
             animation: session,
@@ -316,29 +231,78 @@ class _GamePlayerScreenState extends ConsumerState<GamePlayerScreen> {
                   ),
                   if (session.isPaused && !session.isFinished)
                     _PauseOverlay(
-                      engine: engine,
-                      definition: def,
-                      onResume: () => session.setPaused(false),
-                      onRestart: () {
-                        session.setPaused(false);
-                        _restart();
-                      },
+                      session: session,
                       onQuit: _quit,
+                      onResume: () => session.setPaused(false),
+                      onRestart: _restart,
                       onHint: () async {
                         final ok = await session.requestHint();
                         if (!ok && mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('No hints available right now.')),
+                            const SnackBar(content: Text('Not enough coins!')),
                           );
                         }
                       },
                     ),
+                  if (_showIntro && !session.isFinished)
+                    _LevelIntro(level: def.level, title: def.title),
                 ],
               );
             },
           ),
         ),
       ),
+    );
+  }
+}
+
+class _LevelIntro extends StatelessWidget {
+  const _LevelIntro({required this.level, required this.title});
+  final int level;
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0, end: 1),
+      duration: const Duration(milliseconds: 1800),
+      builder: (context, val, child) {
+        final opacity = (1.5 - val * 2).clamp(0.0, 1.0);
+        if (opacity <= 0) return const SizedBox.shrink();
+        return Container(
+          color: theme.brightness == Brightness.light 
+              ? Colors.white.withOpacity(opacity) 
+              : Colors.black.withOpacity(opacity),
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Transform.scale(
+                  scale: 1.0 + val * 0.2,
+                  child: Text(
+                    'LEVEL $level',
+                    style: theme.textTheme.displayMedium?.copyWith(
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 4 + val * 20,
+                      color: theme.colorScheme.onSurface.withOpacity(opacity),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  title.toUpperCase(),
+                  style: theme.textTheme.labelLarge?.copyWith(
+                    letterSpacing: 4,
+                    fontWeight: FontWeight.bold,
+                    color: theme.colorScheme.primary.withOpacity(opacity),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
@@ -357,165 +321,137 @@ class _HudBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final onSurface = theme.colorScheme.onSurface;
-    return Column(
-      children: [
-        Row(
-          children: [
-            IconButton(
-              onPressed: () => Navigator.of(context).maybePop(),
-              icon: const Icon(Icons.arrow_back),
-              tooltip: 'Back',
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
-                  ),
-                  const SizedBox(height: 2),
-                  Row(
-                    children: [
-                      Icon(Icons.stars, size: 16, color: theme.colorScheme.tertiary),
-                      const SizedBox(width: 4),
-                      Text(
-                        '${hud.score}',
-                        style: theme.textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: onSurface,
-                        ),
-                      ),
-                      if (hud.status != null) ...[
-                        const SizedBox(width: 12),
-                        Text(hud.status!, style: theme.textTheme.labelLarge?.copyWith(color: onSurface)),
-                      ],
-                      if (hud.detail != null) ...[
-                        const SizedBox(width: 12),
-                        Text(
-                          hud.detail!,
-                          style: theme.textTheme.labelMedium?.copyWith(
-                            color: theme.colorScheme.onSurfaceVariant,
-                          ),
-                        ),
-                      ],
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            if (onPause != null)
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Column(
+        children: [
+          Row(
+            children: [
               IconButton(
+                icon: const Icon(Icons.pause_circle_outline, size: 32),
                 onPressed: onPause,
-                icon: const Icon(Icons.pause_circle_outline),
-                tooltip: 'Pause',
               ),
-          ],
-        ),
-        if (hud.progress != null)
-          Padding(
-            padding: const EdgeInsets.fromLTRB(8, 4, 8, 2),
-            child: LinearProgressIndicator(
-              value: hud.progress!.clamp(0.0, 1.0),
-              minHeight: 6,
-              borderRadius: BorderRadius.circular(3),
-            ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w900),
+                    ),
+                    if (hud.status != null)
+                      Text(
+                        hud.status!,
+                        style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.primary),
+                      ),
+                  ],
+                ),
+              ),
+              Text(
+                '${hud.score}',
+                style: theme.textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w900),
+              ),
+            ],
           ),
-      ],
+          if (hud.progress != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(4),
+                child: LinearProgressIndicator(value: hud.progress, minHeight: 6),
+              ),
+            ),
+        ],
+      ),
     );
   }
 }
 
-class _PauseOverlay extends ConsumerWidget {
+class _PauseOverlay extends StatelessWidget {
   const _PauseOverlay({
-    required this.engine,
-    required this.definition,
+    required this.session,
+    required this.onQuit,
     required this.onResume,
     required this.onRestart,
-    required this.onQuit,
     required this.onHint,
   });
 
-  final GameEngine engine;
-  final GameDefinition definition;
+  final GameSessionController session;
+  final VoidCallback onQuit;
   final VoidCallback onResume;
   final VoidCallback onRestart;
-  final VoidCallback onQuit;
-  final Future<void> Function() onHint;
+  final VoidCallback onHint;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final settings = ref.watch(settingsProvider);
     return Container(
-      color: Colors.black54,
-      alignment: Alignment.center,
-      child: Card(
-        margin: const EdgeInsets.all(28),
-        child: Padding(
-          padding: const EdgeInsets.all(24),
+      color: Colors.black.withOpacity(0.85),
+      child: Center(
+        child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Row(
-                children: [
-                  Expanded(child: Text('Paused', style: theme.textTheme.headlineSmall)),
-                  // Quick audio toggles (add-on spec §4: reachable from the
-                  // pause menu, not buried in Settings).
-                  IconButton(
-                    tooltip: settings.musicOn ? 'Mute music' : 'Unmute music',
-                    onPressed: () => settings.setMusic(!settings.musicOn),
-                    icon: Icon(
-                      settings.musicOn ? Icons.music_note : Icons.music_off,
-                    ),
-                  ),
-                  IconButton(
-                    tooltip: settings.soundOn ? 'Mute sound effects' : 'Unmute sound effects',
-                    onPressed: () => settings.setSound(!settings.soundOn),
-                    icon: Icon(
-                      settings.soundOn ? Icons.volume_up : Icons.volume_off,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
               Text(
-                engine.instructions,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
+                'PAUSED',
+                style: theme.textTheme.displayMedium?.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: 2,
                 ),
               ),
-              const SizedBox(height: 20),
-              FilledButton.icon(
-                onPressed: onResume,
-                icon: const Icon(Icons.play_arrow),
-                label: const Text('Resume'),
-              ),
-              const SizedBox(height: 8),
-              if (engine.supportsHint)
-                OutlinedButton.icon(
-                  onPressed: () => onHint(),
-                  icon: const Icon(Icons.lightbulb_outline),
-                  label: const Text('Hint (150 coins or ad)'),
+              const SizedBox(height: 48),
+              _PauseBtn(label: 'RESUME', icon: Icons.play_arrow, onTap: onResume, primary: true),
+              const SizedBox(height: 16),
+              _PauseBtn(label: 'RESTART', icon: Icons.refresh, onTap: onRestart),
+              const SizedBox(height: 16),
+              _PauseBtn(label: 'QUIT', icon: Icons.close, onTap: onQuit),
+              const SizedBox(height: 48),
+              TextButton.icon(
+                onPressed: onHint,
+                icon: const Icon(Icons.lightbulb, color: Colors.amber),
+                label: Text(
+                  'GET A HINT (${ProgressController.hintCost} coins)',
+                  style: const TextStyle(color: Colors.white70),
                 ),
-              const SizedBox(height: 8),
-              OutlinedButton.icon(
-                onPressed: onRestart,
-                icon: const Icon(Icons.refresh),
-                label: const Text('Restart'),
-              ),
-              const SizedBox(height: 8),
-              TextButton(
-                onPressed: onQuit,
-                child: const Text('Quit game'),
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _PauseBtn extends StatelessWidget {
+  const _PauseBtn({
+    required this.label,
+    required this.icon,
+    required this.onTap,
+    this.primary = false,
+  });
+
+  final String label;
+  final IconData icon;
+  final VoidCallback onTap;
+  final bool primary;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return SizedBox(
+      width: 220,
+      height: 56,
+      child: FilledButton.icon(
+        style: FilledButton.styleFrom(
+          backgroundColor: primary ? theme.colorScheme.primary : Colors.white12,
+          foregroundColor: Colors.white,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        ),
+        onPressed: onTap,
+        icon: Icon(icon),
+        label: Text(label, style: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1)),
       ),
     );
   }

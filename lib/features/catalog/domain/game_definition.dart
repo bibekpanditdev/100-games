@@ -1,14 +1,7 @@
 /// Domain model for a single game in the catalog.
-///
-/// Every game — built-in (procedurally seeded) or user supplied via
-/// `assets/manifests/custom_games.json` — is described by a [GameDefinition].
-/// Adding a game to the catalog never requires code changes: a manifest entry
-/// plus (optionally) a thumbnail asset is enough. See docs/ADDING_A_GAME.md.
 library;
 
-/// The six top-level game categories. `mind` is the Puzzle & Mind Games
-/// module (logic / word / memory / math / spatial — see the `group` config
-/// key on mind-game manifests).
+/// The six top-level game categories.
 enum GameCategory {
   arcade,
   puzzle,
@@ -62,6 +55,7 @@ class GameDefinition {
     required this.template,
     required this.difficulty,
     required this.themeId,
+    this.level = 1,
     this.config = const {},
     this.thumbnail,
     this.unlocked = true,
@@ -69,35 +63,17 @@ class GameDefinition {
     this.isNew = false,
   });
 
-  /// Unique id, e.g. `snake_neon_hard`.
   final String id;
-
-  /// Display title, e.g. `Neon Snake`.
   final String title;
-
   final GameCategory category;
-
-  /// Engine template id, e.g. `snake`. Must exist in the engine registry.
   final String template;
-
   final Difficulty difficulty;
-
-  /// Visual palette id, e.g. `neon`. See `lib/core/theme/palettes.dart`.
   final String themeId;
-
-  /// Template-specific knobs (grid size, speed, target score, ...).
-  /// Engines read these through [GameConfig] typed accessors.
+  final int level;
   final Map<String, dynamic> config;
-
-  /// Optional asset path (WebP/PNG). When null the UI renders a procedural
-  /// thumbnail from the palette + template glyph.
   final String? thumbnail;
-
   final bool unlocked;
-
-  /// Deterministic pseudo-random 0..1000 used for "Popular" ordering.
   final int popularity;
-
   final bool isNew;
 
   factory GameDefinition.fromJson(Map<String, dynamic> json) {
@@ -108,6 +84,7 @@ class GameDefinition {
       template: json['template'] as String,
       difficulty: Difficulty.fromString(json['difficulty'] as String? ?? ''),
       themeId: json['theme'] as String? ?? json['themeId'] as String? ?? 'ocean',
+      level: json['level'] as int? ?? 1,
       config: (json['config'] as Map<String, dynamic>?) ?? const {},
       thumbnail: json['thumbnail'] as String?,
       unlocked: json['unlocked'] as bool? ?? true,
@@ -121,16 +98,13 @@ class GameDefinition {
         'template': template,
         'difficulty': difficulty.name,
         'theme': themeId,
+        'level': level,
         'thumbnail': thumbnail,
         'unlocked': unlocked,
         'config': config,
       };
 }
 
-/// Typed, null-safe accessor over a [GameDefinition]'s config map.
-///
-/// Engines must always read config through fallback-providing getters so a
-/// missing or malformed manifest entry can never crash gameplay.
 class GameConfig {
   const GameConfig(this.raw);
 

@@ -262,36 +262,32 @@ class _TicTacToeGameState extends State<TicTacToeGame> {
     final index = r * 3 + c;
     final mark = _logic.board[index];
     final hinted = _hintCell == index;
-    final markName = switch (mark) {
-      TicTacToeLogic.player => 'X',
-      TicTacToeLogic.cpu => 'O',
-      _ => 'empty',
-    };
-    return Semantics(
-      button: true,
-      label: 'Row ${r + 1} column ${c + 1}, $markName',
-      child: GestureDetector(
-        onTap: () => _onCellTap(index),
-        child: Container(
-          margin: const EdgeInsets.all(2),
-          decoration: BoxDecoration(
-            color: (r + c) % 2 == 0 ? palette.boardA : palette.boardB,
-            borderRadius: BorderRadius.circular(8),
-            border: inWinLine || hinted
-                ? Border.all(color: palette.accent, width: 3)
-                : null,
-          ),
-          alignment: Alignment.center,
-          padding: const EdgeInsets.all(10),
+    return GestureDetector(
+      onTap: () => _onCellTap(index),
+      child: Container(
+        margin: const EdgeInsets.all(4),
+        decoration: BoxDecoration(
+          color: (r + c) % 2 == 0 ? Colors.white.withOpacity(0.5) : Colors.white.withOpacity(0.3),
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: inWinLine ? [BoxShadow(color: palette.accent.withOpacity(0.4), blurRadius: 12)] : null,
+          border: inWinLine || hinted
+              ? Border.all(color: palette.accent, width: 3)
+              : Border.all(color: Colors.black.withOpacity(0.05), width: 1),
+        ),
+        alignment: Alignment.center,
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 300),
+          transitionBuilder: (child, animation) => ScaleTransition(scale: animation, child: child),
           child: mark == 0
-              ? null
+              ? (hinted ? Icon(Icons.lightbulb, color: palette.accent.withOpacity(0.3), size: 30) : null)
               : CustomPaint(
-                  size: Size.infinite,
+                  key: ValueKey('mark_$index'),
+                  size: const Size(50, 50),
                   painter: _MarkPainter(
                     isX: mark == TicTacToeLogic.player,
                     color: mark == TicTacToeLogic.player
-                        ? kPieceColors[0]
-                        : kPieceColors[1],
+                        ? palette.accent
+                        : const Color(0xFF424242),
                   ),
                 ),
         ),

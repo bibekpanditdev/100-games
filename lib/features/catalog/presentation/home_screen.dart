@@ -31,7 +31,7 @@ class HomeScreen extends ConsumerWidget {
       body: SafeArea(
         bottom: false,
         child: Column(
-          children: const [
+          children: [
             HomeHeader(),
             HomeSearchField(),
             CategoryTabBar(),
@@ -138,15 +138,20 @@ class _CatalogContent extends ConsumerWidget {
   List<Widget> _carouselSlivers(String title, List<GameDefinition> games) {
     if (games.isEmpty) return const [];
     return [
-      SliverToBoxAdapter(child: SectionHeader(title: title)),
+      SliverToBoxAdapter(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 24, bottom: 12),
+          child: SectionHeader(title: title),
+        ),
+      ),
       SliverToBoxAdapter(
         child: SizedBox(
-          height: 150,
+          height: 180, // Slightly taller for premium feel
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 16),
             itemCount: games.length,
-            separatorBuilder: (_, __) => const SizedBox(width: 12),
+            separatorBuilder: (_, __) => const SizedBox(width: 16),
             itemBuilder: (context, index) =>
                 ProviderGameCard(definition: games[index], compact: true),
           ),

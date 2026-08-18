@@ -99,9 +99,10 @@ class _ResultsScreenState extends ConsumerState<ResultsScreen>
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      won ? 'You win!' : 'Game over',
+                      won ? 'LEVEL COMPLETE' : 'LEVEL FAILED',
                       style: theme.textTheme.displaySmall?.copyWith(
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 2,
                       ),
                     ),
                     const SizedBox(height: 16),

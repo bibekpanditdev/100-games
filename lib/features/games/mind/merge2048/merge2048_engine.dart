@@ -1,10 +1,12 @@
 /// 2048 merge engine — swipe or arrows to reach the target tile.
 library;
 
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:sensors_plus/sensors_plus.dart';
 
 import '../../../game_player/game_contracts.dart';
 import '../../../../core/services/audio_service.dart';
@@ -19,7 +21,7 @@ class Merge2048Engine implements GameEngine {
 
   @override
   String get instructions =>
-      'Swipe (or use the arrows) to slide tiles. Equal tiles merge and '
+      'Swipe, use arrows, or TILT your device to slide tiles. Equal tiles merge and '
       'double — reach the target tile before the board jams.';
 
   @override
@@ -44,6 +46,8 @@ class Merge2048Game extends StatefulWidget {
 class _Merge2048GameState extends State<Merge2048Game> {
   late Merge2048Logic _logic;
   bool _finished = false;
+  StreamSubscription? _accelerometerSub;
+  DateTime _lastMoveTime = DateTime.now();
 
   @override
   void initState() {
@@ -55,6 +59,38 @@ class _Merge2048GameState extends State<Merge2048Game> {
       ..winTile = target
       ..start();
     _pushHud();
+    _initSensors();
+  }
+
+  void _initSensors() {
+    // "Screen tock senses" — adding accelerometer support for tilt-to-move.
+    _accelerometerSub = accelerometerEventStream().listen((event) {
+      if (_finished || widget.session.isPaused) return;
+      
+      final now = DateTime.now();
+      if (now.difference(_lastMoveTime).inMilliseconds < 400) return;
+
+      const threshold = 4.5;
+      if (event.x < -threshold) {
+        _move(MoveDirection.right);
+        _lastMoveTime = now;
+      } else if (event.x > threshold) {
+        _move(MoveDirection.left);
+        _lastMoveTime = now;
+      } else if (event.y < -threshold) {
+        _move(MoveDirection.up); // Note: sensor Y depends on orientation, but usually -Y is forward tilt
+        _lastMoveTime = now;
+      } else if (event.y > threshold) {
+        _move(MoveDirection.down);
+        _lastMoveTime = now;
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _accelerometerSub?.cancel();
+    super.dispose();
   }
 
   void _pushHud() {
@@ -69,13 +105,17 @@ class _Merge2048GameState extends State<Merge2048Game> {
     if (_finished || widget.session.isPaused) return;
     final gained = _logic.move(dir);
     if (gained == 0 && !_logic.gameOver && !_logic.won) return;
-    HapticFeedback.lightImpact();
+    
+    // Haptics and sound for sensory feedback
+    HapticFeedback.mediumImpact(); 
     AudioService.I.sfx(SfxKeys.place);
     if (_logic.consumeBigMerge()) {
       AudioService.I.sfx(SfxKeys.powerup);
     }
-    setState(() {});
+    
+    if (mounted) setState(() {});
     _pushHud();
+    
     if (_logic.won) {
       _finish(won: true);
     } else if (_logic.gameOver) {
@@ -86,6 +126,7 @@ class _Merge2048GameState extends State<Merge2048Game> {
   void _finish({required bool won}) {
     if (_finished) return;
     _finished = true;
+    _accelerometerSub?.cancel();
     widget.session.finish(
       won: won,
       score: _logic.score,
@@ -97,14 +138,21 @@ class _Merge2048GameState extends State<Merge2048Game> {
   Widget build(BuildContext context) {
     final palette = widget.session.palette;
     return LayoutBuilder(builder: (context, constraints) {
-      final boardSize = constraints.biggest.shortestSide;
+      final boardSize = constraints.biggest.shortestSide * 0.95;
       final cell = boardSize / _logic.size;
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(
+          // The Board with animations
+          Container(
             width: boardSize,
             height: boardSize,
+            padding: const EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              color: palette.boardA.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: palette.boardA, width: 2),
+            ),
             child: GestureDetector(
               onHorizontalDragEnd: (d) {
                 if ((d.primaryVelocity ?? 0) < -40) {
@@ -129,9 +177,25 @@ class _Merge2048GameState extends State<Merge2048Game> {
                 itemBuilder: (context, index) {
                   final x = index % _logic.size;
                   final y = index ~/ _logic.size;
-                  return _tile(palette, _logic.tileAt(x, y), cell);
+                  final value = _logic.tileAt(x, y);
+                  return AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 150),
+                    transitionBuilder: (child, animation) => ScaleTransition(scale: animation, child: child),
+                    child: _tile(palette, value, cell, key: ValueKey('tile_${x}_${y}_$value')),
+                  );
                 },
               ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          // Tilt Indicator / Senses Help
+          Text(
+            'TILT TO MOVE',
+            style: TextStyle(
+              color: palette.foreground.withOpacity(0.5),
+              fontWeight: FontWeight.bold,
+              letterSpacing: 2,
+              fontSize: 12,
             ),
           ),
           const SizedBox(height: 12),
@@ -153,45 +217,59 @@ class _Merge2048GameState extends State<Merge2048Game> {
     });
   }
 
-  Widget _arrowBtn(IconData icon, VoidCallback onTap) => SizedBox(
-        width: 56,
-        height: 48,
+  Widget _arrowBtn(IconData icon, VoidCallback onTap) => Container(
+        margin: const EdgeInsets.all(4),
+        decoration: BoxDecoration(
+          color: widget.session.palette.boardA.withOpacity(0.1),
+          shape: BoxShape.circle,
+        ),
         child: IconButton(
           onPressed: onTap,
-          icon: Icon(icon, size: 32),
+          icon: Icon(icon, size: 32, color: widget.session.palette.foreground),
           tooltip: 'Move',
         ),
       );
 
-  Widget _tile(GamePalette palette, int value, double cell) {
-    final theme = Theme.of(context);
+  Widget _tile(GamePalette palette, int value, double cell, {Key? key}) {
     if (value == 0) {
       return Container(
-        margin: const EdgeInsets.all(3),
+        key: key,
+        margin: const EdgeInsets.all(4),
         decoration: BoxDecoration(
-          color: palette.boardA.withOpacity(0.5),
-          borderRadius: BorderRadius.circular(6),
+          color: palette.boardA.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(8),
         ),
       );
     }
-    // Tile color cycles the CVD-safe palette by log2 — the big printed
-    // number is the primary channel, color is secondary.
+    
     final tier = (log(value) / log(2)).round();
     final color = kPieceColors[tier % kPieceColors.length];
     final fg = GamePalette.contrastOn(color);
+    
     return Container(
-      margin: const EdgeInsets.all(3),
+      key: key,
+      margin: const EdgeInsets.all(4),
       decoration: BoxDecoration(
         color: color,
-        borderRadius: BorderRadius.circular(6),
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       alignment: Alignment.center,
       child: Text(
         '$value',
         style: TextStyle(
           fontSize: cell * (value >= 1024 ? 0.26 : value >= 128 ? 0.3 : 0.38),
-          fontWeight: FontWeight.w800,
+          fontWeight: FontWeight.w900,
           color: fg,
+          shadows: [
+            Shadow(color: Colors.black.withOpacity(0.3), offset: const Offset(1, 1), blurRadius: 1),
+          ],
         ),
       ),
     );

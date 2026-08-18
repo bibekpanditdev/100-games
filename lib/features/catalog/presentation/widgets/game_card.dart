@@ -51,70 +51,77 @@ class GameCard extends StatelessWidget {
       label: '${definition.title}, ${definition.category.label}, '
           '${definition.difficulty.label}',
       button: true,
-      child: Material(
-        color: theme.colorScheme.surfaceContainerHighest.withOpacity(0.35),
-        elevation: 1,
-        borderRadius: BorderRadius.circular(14),
-        clipBehavior: Clip.antiAlias,
-        child: InkWell(
-          onTap: onTap,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              AspectRatio(
-                aspectRatio: compact ? compactWidth / 80 : 1,
-                child: Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    GameThumbnail(definition: definition),
-                    const Positioned(top: 4, right: 4, child: OfflineBadge()),
-                    if (bestStars != null)
-                      Positioned(
-                        left: 4,
-                        bottom: 4,
-                        child: _StarScrim(stars: bestStars!),
-                      ),
-                  ],
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: theme.colorScheme.outline.withOpacity(0.1)),
+        ),
+        child: Material(
+          color: theme.colorScheme.surface,
+          borderRadius: BorderRadius.circular(20),
+          clipBehavior: Clip.antiAlias,
+          child: InkWell(
+            onTap: onTap,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                AspectRatio(
+                  aspectRatio: compact ? compactWidth / 95 : 1,
+                  child: Hero(
+                    tag: 'thumb_${definition.id}',
+                    child: GameThumbnail(definition: definition),
+                  ),
                 ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(6),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Flexible(
-                        child: Text(
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
                           definition.title,
                           maxLines: compact ? 1 : 2,
                           overflow: TextOverflow.ellipsis,
                           style: theme.textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w900,
+                            fontSize: compact ? 12 : 14,
+                            letterSpacing: -0.4,
                             height: 1.1,
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 4),
-                      Flexible(
-                        child: FittedBox(
+                        FittedBox(
                           fit: BoxFit.scaleDown,
                           alignment: Alignment.centerLeft,
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              DifficultyChip(difficulty: definition.difficulty),
-                              const SizedBox(width: 4),
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                decoration: BoxDecoration(
+                                  color: theme.colorScheme.primary.withOpacity(0.05),
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                child: Text(
+                                  'LVL ${definition.level}',
+                                  style: TextStyle(
+                                    fontSize: 9,
+                                    fontWeight: FontWeight.w900,
+                                    color: theme.colorScheme.primary,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 6),
                               PlayCountChip(count: playCount),
                             ],
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

@@ -27,7 +27,7 @@ class ThousandGamesApp extends ConsumerWidget {
     );
 
     return MaterialApp(
-      title: '1000+ Games',
+      title: 'GAME',
       debugShowCheckedModeBanner: false,
       theme: buildLightTheme(),
       darkTheme: buildDarkTheme(),

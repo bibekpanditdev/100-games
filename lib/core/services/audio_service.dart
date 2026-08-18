@@ -78,7 +78,7 @@ class AudioService {
     'jump', 'die', 'powerup', 'tick', 'pickup', 'snap', 'rotate', 'solved',
   ];
 
-  final AudioCache _cache = AudioCache(prefix: 'audio/sfx/');
+  final AudioCache _cache = AudioCache(prefix: 'assets/audio/sfx/');
   final AudioPlayer _bgm = AudioPlayer(playerId: 'tg_bgm');
 
   bool _initialized = false;

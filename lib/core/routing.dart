@@ -48,7 +48,8 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
         initialQuery: args is String ? args : '',
       );
     case Routes.game:
-      builder = (_, __, ___) => GamePlayerScreen(gameId: settings.arguments! as String);
+      final gameId = settings.arguments! as String;
+      builder = (_, __, ___) => GamePlayerScreen(gameId: gameId);
     case Routes.results:
       builder = (_, __, ___) =>
           ResultsScreen(payload: settings.arguments! as ResultsPayload);
