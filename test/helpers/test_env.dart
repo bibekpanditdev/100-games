@@ -7,7 +7,7 @@ import 'dart:io';
 import 'package:hive/hive.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-import 'package:thousand_games/core/storage/app_database.dart';
+import 'package:game/core/storage/app_database.dart';
 
 bool _ffiInitialized = false;
 String? _hiveDir;

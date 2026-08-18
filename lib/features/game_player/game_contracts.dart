@@ -6,7 +6,6 @@
 /// everything they need arrives through the [GameSessionController].
 library;
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
 import '../catalog/domain/game_definition.dart';

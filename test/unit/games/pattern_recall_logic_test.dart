@@ -6,7 +6,7 @@ library;
 import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:thousand_games/features/games/mind/pattern_recall/pattern_recall_logic.dart';
+import 'package:game/features/games/mind/pattern_recall/pattern_recall_logic.dart';
 
 PatternRecallLogic newLogic({
   int grid = 4,

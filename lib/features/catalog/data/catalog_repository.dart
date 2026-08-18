@@ -8,7 +8,6 @@ import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:sqflite/sqflite.dart';
 
-import '../../../core/storage/app_database.dart';
 import '../domain/game_definition.dart';
 import 'catalog_seeder.dart';
 

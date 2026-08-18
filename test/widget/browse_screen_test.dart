@@ -4,9 +4,9 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:thousand_games/features/catalog/domain/game_definition.dart';
-import 'package:thousand_games/features/catalog/presentation/browse_screen.dart';
-import 'package:thousand_games/features/catalog/presentation/widgets/game_card.dart';
+import 'package:game/features/catalog/domain/game_definition.dart';
+import 'package:game/features/catalog/presentation/browse_screen.dart';
+import 'package:game/features/catalog/presentation/widgets/game_card.dart';
 
 import '../helpers/test_container.dart';
 import '../helpers/test_env.dart';

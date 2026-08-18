@@ -3,8 +3,8 @@ library;
 
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:thousand_games/features/catalog/domain/game_definition.dart';
-import 'package:thousand_games/features/gamification/adaptive_difficulty.dart';
+import 'package:game/features/catalog/domain/game_definition.dart';
+import 'package:game/features/gamification/adaptive_difficulty.dart';
 
 void main() {
   test('no suggestion without at least 3 results', () {

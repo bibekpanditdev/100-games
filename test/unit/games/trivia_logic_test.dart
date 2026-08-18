@@ -9,8 +9,8 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:thousand_games/features/catalog/domain/game_definition.dart';
-import 'package:thousand_games/features/games/trivia/trivia_logic.dart';
+import 'package:game/features/catalog/domain/game_definition.dart';
+import 'package:game/features/games/trivia/trivia_logic.dart';
 
 /// Tiny hand-written bank used for parse-validation tests.
 const String kInlineFixture = '''

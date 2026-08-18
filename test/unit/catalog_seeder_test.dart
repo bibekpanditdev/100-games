@@ -3,9 +3,9 @@ library;
 
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:thousand_games/core/theme/palettes.dart';
-import 'package:thousand_games/features/catalog/data/catalog_seeder.dart';
-import 'package:thousand_games/features/catalog/domain/game_definition.dart';
+import 'package:game/core/theme/palettes.dart';
+import 'package:game/features/catalog/data/catalog_seeder.dart';
+import 'package:game/features/catalog/domain/game_definition.dart';
 
 void main() {
   final games = CatalogSeeder.generate();

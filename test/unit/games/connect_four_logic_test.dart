@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:thousand_games/features/games/board/connect_four/connect_four_logic.dart';
+import 'package:game/features/games/board/connect_four/connect_four_logic.dart';
 
 const _cols = 7;
 const _rows = 6;

@@ -3,12 +3,11 @@ library;
 
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:thousand_games/core/storage/app_database.dart';
-import 'package:thousand_games/features/catalog/domain/game_definition.dart';
-import 'package:thousand_games/features/gamification/achievements/achievement_definitions.dart';
-import 'package:thousand_games/features/gamification/achievements/achievements_repository.dart';
-import 'package:thousand_games/features/gamification/progress_controller.dart';
-import 'package:thousand_games/features/leaderboards/scores_repository.dart';
+import 'package:game/core/storage/app_database.dart';
+import 'package:game/features/catalog/domain/game_definition.dart';
+import 'package:game/features/gamification/achievements/achievements_repository.dart';
+import 'package:game/features/gamification/progress_controller.dart';
+import 'package:game/features/leaderboards/scores_repository.dart';
 
 import '../helpers/test_env.dart';
 

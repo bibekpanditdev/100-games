@@ -5,8 +5,8 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:thousand_games/core/theme/app_theme.dart';
-import 'package:thousand_games/core/utils/contrast.dart';
+import 'package:game/core/theme/app_theme.dart';
+import 'package:game/core/utils/contrast.dart';
 
 void main() {
   final Map<String, (ColorScheme, Color)> themes = {

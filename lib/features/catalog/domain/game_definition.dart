@@ -69,8 +69,13 @@ class GameDefinition {
   final String template;
   final Difficulty difficulty;
   final String themeId;
+
+  /// Game level (1..12).
   final int level;
+
+  /// Template-specific knobs (grid size, speed, target score, ...).
   final Map<String, dynamic> config;
+
   final String? thumbnail;
   final bool unlocked;
   final int popularity;

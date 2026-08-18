@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:thousand_games/features/games/puzzle/sliding_puzzle/sliding_puzzle_logic.dart';
+import 'package:game/features/games/puzzle/sliding_puzzle/sliding_puzzle_logic.dart';
 
 /// Parity check for the classic n-puzzle with the blank in the bottom-right
 /// goal cell. Odd width: solvable iff inversions are even. Even width:

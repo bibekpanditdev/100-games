@@ -340,10 +340,9 @@ class _DodgeTrackPainter extends CustomPainter {
     final paint = Paint()..color = color..style = PaintingStyle.fill;
     final glassPaint = Paint()..color = Colors.black.withOpacity(0.6);
     final lightPaint = Paint()..color = Colors.white..maskFilter = const MaskFilter.blur(BlurStyle.normal, 3);
-    final shadowPaint = Paint()..color = Colors.black.withOpacity(0.3)..maskFilter = const MaskFilter.blur(BlurStyle.normal, 5);
 
     // 1. Shadow
-    canvas.drawRRect(RRect.fromRectAndRadius((pos & size).shift(const Offset(4, 4)), const Radius.circular(10)), shadowPaint);
+    canvas.drawRRect(RRect.fromRectAndRadius((pos & size).shift(const Offset(4, 4)), const Radius.circular(10)), Paint()..color = Colors.black.withOpacity(0.3)..maskFilter = const MaskFilter.blur(BlurStyle.normal, 5));
 
     // 2. Main Body (Aerodynamic)
     final body = Path()

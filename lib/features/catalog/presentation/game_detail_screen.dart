@@ -120,7 +120,7 @@ class _DetailBody extends ConsumerWidget {
                           size: 16,
                           color: theme.colorScheme.primary,
                         ),
-                        label: Text('Try ${suggested!.label}'),
+                        label: Text('Try ${suggested.label}'),
                         onPressed: () => Navigator.of(context).pushNamed(
                           Routes.game,
                           arguments: definition.id,

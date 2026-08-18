@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:thousand_games/features/games/board/dots_and_boxes/dots_and_boxes_logic.dart';
+import 'package:game/features/games/board/dots_and_boxes/dots_and_boxes_logic.dart';
 
 const _h = true;
 const _v = false;

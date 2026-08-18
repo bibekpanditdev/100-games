@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:thousand_games/features/games/arcade/snake/snake_logic.dart';
+import 'package:game/features/games/arcade/snake/snake_logic.dart';
 
 /// Head-first body of a fresh size-16 snake heading right.
 SnakeLogic freshLogic({int size = 16, bool wrap = false, int seed = 1}) =>

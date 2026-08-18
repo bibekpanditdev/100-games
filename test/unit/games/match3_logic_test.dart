@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:thousand_games/features/games/puzzle/match3/match3_logic.dart';
+import 'package:game/features/games/puzzle/match3/match3_logic.dart';
 
 /// Board with a horizontal match in row 0 and nothing else.
 const List<List<int>> kHorizontalGrid = [

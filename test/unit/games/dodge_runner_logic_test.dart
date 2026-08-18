@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:thousand_games/features/games/arcade/dodge_runner/dodge_runner_logic.dart';
+import 'package:game/features/games/arcade/dodge_runner/dodge_runner_logic.dart';
 
 DodgeRunnerLogic makeLogic({
   int lanes = 3,

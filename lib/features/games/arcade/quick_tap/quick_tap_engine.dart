@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import '../../../game_player/game_contracts.dart';
 import '../../../../core/services/audio_service.dart';
-import '../../../../core/theme/palettes.dart';
 
 class QuickTapEngine implements GameEngine {
   const QuickTapEngine();

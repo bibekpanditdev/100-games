@@ -8,8 +8,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:thousand_games/core/utils/formatters.dart';
-import 'package:thousand_games/features/games/mind/wordle_daily/wordle_daily_logic.dart';
+import 'package:game/core/utils/formatters.dart';
+import 'package:game/features/games/mind/wordle_daily/wordle_daily_logic.dart';
 
 const List<String> kFixtureBank = [
   'apple', 'beach', 'chair', 'dream', 'eagle', 'flame', 'ghost', 'heart',

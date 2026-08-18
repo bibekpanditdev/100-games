@@ -4,8 +4,8 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:thousand_games/features/achievements/presentation/achievements_screen.dart';
-import 'package:thousand_games/features/gamification/achievements/achievement_definitions.dart';
+import 'package:game/features/achievements/presentation/achievements_screen.dart';
+import 'package:game/features/gamification/achievements/achievement_definitions.dart';
 
 import '../helpers/test_container.dart';
 

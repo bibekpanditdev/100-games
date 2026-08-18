@@ -3,8 +3,8 @@ library;
 
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:thousand_games/features/catalog/data/catalog_repository.dart';
-import 'package:thousand_games/features/catalog/domain/game_definition.dart';
+import 'package:game/features/catalog/data/catalog_repository.dart';
+import 'package:game/features/catalog/domain/game_definition.dart';
 
 import '../helpers/test_env.dart';
 

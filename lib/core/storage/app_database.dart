@@ -62,9 +62,10 @@ class AppDatabase {
         played_at INTEGER NOT NULL
       )
     ''');
-    batch.execute('CREATE INDEX idx_scores_game ON scores(game_id)');
-    batch.execute('CREATE INDEX idx_scores_category ON scores(category)');
-    batch.execute('''
+    batch
+      ..execute('CREATE INDEX idx_scores_game ON scores(game_id)')
+      ..execute('CREATE INDEX idx_scores_category ON scores(category)')
+      ..execute('''
       CREATE TABLE achievements (
         id TEXT PRIMARY KEY,
         progress INTEGER NOT NULL DEFAULT 0,

@@ -3,8 +3,8 @@ library;
 
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:thousand_games/features/catalog/domain/game_definition.dart';
-import 'package:thousand_games/features/gamification/scoring.dart';
+import 'package:game/features/catalog/domain/game_definition.dart';
+import 'package:game/features/gamification/scoring.dart';
 
 void main() {
   group('coinsFor', () {

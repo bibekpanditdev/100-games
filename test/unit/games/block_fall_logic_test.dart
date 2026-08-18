@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:thousand_games/features/games/puzzle/block_fall/block_fall_logic.dart';
+import 'package:game/features/games/puzzle/block_fall/block_fall_logic.dart';
 
 /// Fills the given rows completely except the given gap columns.
 void stackRows(BlockFallLogic logic, int firstRow, int lastRow, List<int> gaps) {

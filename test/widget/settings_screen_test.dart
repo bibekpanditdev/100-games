@@ -5,9 +5,9 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:thousand_games/core/services/feedback.dart';
-import 'package:thousand_games/features/catalog/presentation/catalog_providers.dart';
-import 'package:thousand_games/features/settings/presentation/settings_screen.dart';
+import 'package:game/core/services/feedback.dart';
+import 'package:game/features/catalog/presentation/catalog_providers.dart';
+import 'package:game/features/settings/presentation/settings_screen.dart';
 
 import '../helpers/test_container.dart';
 

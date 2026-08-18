@@ -151,10 +151,10 @@ class AdsService {
       Timer(const Duration(seconds: 20), () {
         if (!earned.isCompleted) earned.complete(rewardEarned);
       });
-      return earned.future;
+      return await earned.future;
     } catch (_) {
       if (!earned.isCompleted && !dismissed) return false;
-      return earned.future;
+      return await earned.future;
     } finally {
       _rewarded = null;
     }

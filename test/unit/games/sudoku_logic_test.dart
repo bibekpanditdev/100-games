@@ -5,7 +5,7 @@ import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:thousand_games/features/games/mind/sudoku/sudoku_logic.dart';
+import 'package:game/features/games/mind/sudoku/sudoku_logic.dart';
 
 void main() {
   test('random solved grid is a valid Sudoku', () {

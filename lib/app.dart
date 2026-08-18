@@ -9,7 +9,6 @@ import 'core/services/audio_service.dart';
 import 'core/services/feedback.dart';
 import 'core/theme/app_theme.dart';
 import 'features/catalog/presentation/catalog_providers.dart';
-import 'features/settings/settings_controller.dart';
 
 class ThousandGamesApp extends ConsumerWidget {
   const ThousandGamesApp({super.key});

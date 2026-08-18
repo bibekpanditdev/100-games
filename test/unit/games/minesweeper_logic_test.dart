@@ -5,7 +5,7 @@ import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:thousand_games/features/games/mind/minesweeper/minesweeper_logic.dart';
+import 'package:game/features/games/mind/minesweeper/minesweeper_logic.dart';
 
 void main() {
   test('first tap (and its neighborhood) is always safe', () {

@@ -45,8 +45,8 @@ Future<void> main() async {
     MotionSettings.reduced = settings.reducedMotion;
 
     // Non-blocking, fail-silent.
-    unawaited(AdsService.instance.init());
-    unawaited(AudioService.I.init());
+    AdsService.instance.init();
+    AudioService.I.init();
 
     runApp(
       ProviderScope(

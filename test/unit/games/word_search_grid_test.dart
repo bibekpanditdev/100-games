@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:thousand_games/features/games/puzzle/word_search/word_search_logic.dart';
+import 'package:game/features/games/puzzle/word_search/word_search_logic.dart';
 
 const List<String> kWords = [
   'CAT', 'DOG', 'ELEPHANT', 'FALCON', 'OWL', 'PENGUIN',

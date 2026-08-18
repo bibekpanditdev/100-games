@@ -5,7 +5,7 @@ import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:thousand_games/features/games/mind/merge2048/merge2048_logic.dart';
+import 'package:game/features/games/mind/merge2048/merge2048_logic.dart';
 
 void main() {
   test('start spawns exactly two tiles', () {

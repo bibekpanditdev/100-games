@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:thousand_games/features/games/cards/higher_lower/higher_lower_logic.dart';
+import 'package:game/features/games/cards/higher_lower/higher_lower_logic.dart';
 
 void main() {
   group('deck dealing', () {

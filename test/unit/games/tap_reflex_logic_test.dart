@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:thousand_games/features/games/arcade/tap_reflex/tap_reflex_logic.dart';
+import 'package:game/features/games/arcade/tap_reflex/tap_reflex_logic.dart';
 
 TapReflexLogic makeLogic({
   int rounds = 10,

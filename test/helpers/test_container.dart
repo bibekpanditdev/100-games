@@ -10,12 +10,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:thousand_games/core/theme/app_theme.dart';
-import 'package:thousand_games/features/catalog/data/catalog_repository.dart';
-import 'package:thousand_games/features/catalog/presentation/catalog_providers.dart';
-import 'package:thousand_games/features/gamification/progress_controller.dart';
-import 'package:thousand_games/features/leaderboards/scores_repository.dart';
-import 'package:thousand_games/features/settings/settings_controller.dart';
+import 'package:game/core/theme/app_theme.dart';
+import 'package:game/features/catalog/data/catalog_repository.dart';
+import 'package:game/features/catalog/presentation/catalog_providers.dart';
+import 'package:game/features/gamification/progress_controller.dart';
+import 'package:game/features/leaderboards/scores_repository.dart';
+import 'package:game/features/settings/settings_controller.dart';
 
 import 'test_env.dart';
 

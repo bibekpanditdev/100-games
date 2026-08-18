@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:thousand_games/features/games/arcade/breakout/breakout_logic.dart';
+import 'package:game/features/games/arcade/breakout/breakout_logic.dart';
 
 BreakoutLogic makeLogic({
   int rows = 4,

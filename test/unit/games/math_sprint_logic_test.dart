@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:thousand_games/features/games/mind/math_sprint/math_sprint_logic.dart';
+import 'package:game/features/games/mind/math_sprint/math_sprint_logic.dart';
 
 void main() {
   group('question generation', () {

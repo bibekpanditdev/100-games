@@ -3,8 +3,8 @@ library;
 
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:thousand_games/features/catalog/domain/game_definition.dart';
-import 'package:thousand_games/features/game_player/game_contracts.dart';
+import 'package:game/features/catalog/domain/game_definition.dart';
+import 'package:game/features/game_player/game_contracts.dart';
 
 GameDefinition _def(Map<String, dynamic> config) => GameDefinition(
       id: 'test',

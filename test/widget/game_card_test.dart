@@ -4,10 +4,10 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:thousand_games/core/theme/app_theme.dart';
-import 'package:thousand_games/features/catalog/domain/game_definition.dart';
-import 'package:thousand_games/features/catalog/presentation/widgets/game_card.dart';
-import 'package:thousand_games/shared/widgets/star_rating.dart';
+import 'package:game/core/theme/app_theme.dart';
+import 'package:game/features/catalog/domain/game_definition.dart';
+import 'package:game/features/catalog/presentation/widgets/game_card.dart';
+import 'package:game/shared/widgets/star_rating.dart';
 
 GameDefinition _def() => const GameDefinition(
       id: 'match3_neon_medium',

@@ -6,7 +6,7 @@ library;
 import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:thousand_games/features/games/mind/odd_one_out/odd_one_out_logic.dart';
+import 'package:game/features/games/mind/odd_one_out/odd_one_out_logic.dart';
 
 OddOneOutLogic newLogic({
   int items = 6,

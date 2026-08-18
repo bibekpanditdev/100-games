@@ -6,7 +6,7 @@ library;
 import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:thousand_games/features/games/mind/simon/simon_logic.dart';
+import 'package:game/features/games/mind/simon/simon_logic.dart';
 
 SimonLogic newLogic({int startLength = 3, int roundCap = 15, int seed = 1}) =>
     SimonLogic(startLength: startLength, roundCap: roundCap, random: Random(seed));

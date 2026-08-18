@@ -4,11 +4,11 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:thousand_games/core/routing.dart';
-import 'package:thousand_games/features/catalog/domain/game_definition.dart';
-import 'package:thousand_games/features/catalog/presentation/home_screen.dart';
-import 'package:thousand_games/features/catalog/presentation/widgets/game_card.dart';
-import 'package:thousand_games/shared/widgets/skeleton.dart';
+import 'package:game/core/routing.dart';
+import 'package:game/features/catalog/domain/game_definition.dart';
+import 'package:game/features/catalog/presentation/home_screen.dart';
+import 'package:game/features/catalog/presentation/widgets/game_card.dart';
+import 'package:game/shared/widgets/skeleton.dart';
 
 import '../helpers/test_container.dart';
 import '../helpers/test_env.dart';

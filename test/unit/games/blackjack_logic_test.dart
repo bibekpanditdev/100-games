@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:thousand_games/features/games/cards/blackjack/blackjack_logic.dart';
+import 'package:game/features/games/cards/blackjack/blackjack_logic.dart';
 
 BlackjackCard c(int rank, BlackjackSuit suit) => BlackjackCard(rank: rank, suit: suit);
 

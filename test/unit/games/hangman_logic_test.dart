@@ -7,7 +7,7 @@ library;
 import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:thousand_games/features/games/mind/hangman/hangman_logic.dart';
+import 'package:game/features/games/mind/hangman/hangman_logic.dart';
 
 /// Mixed-case words of every length 4..9 to exercise bounds + normalization.
 const List<String> kFixtureBank = [

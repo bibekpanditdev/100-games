@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:thousand_games/features/games/board/tic_tac_toe/tic_tac_toe_logic.dart';
+import 'package:game/features/games/board/tic_tac_toe/tic_tac_toe_logic.dart';
 
 /// Deep-copies a position so the exhaustive search can branch.
 TicTacToeLogic cloneOf(TicTacToeLogic source) {

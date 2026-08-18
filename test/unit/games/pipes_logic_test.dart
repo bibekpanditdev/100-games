@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:thousand_games/features/games/mind/pipes/pipes_logic.dart';
+import 'package:game/features/games/mind/pipes/pipes_logic.dart';
 
 void main() {
   group('tile rotation math', () {

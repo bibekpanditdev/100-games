@@ -3,7 +3,7 @@ library;
 
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:thousand_games/features/gamification/progress_controller.dart';
+import 'package:game/features/gamification/progress_controller.dart';
 
 import '../helpers/test_env.dart';
 

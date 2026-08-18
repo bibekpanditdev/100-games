@@ -4,7 +4,6 @@
 /// progression and depth. Removes repetitive variations.
 library;
 
-import '../../../core/theme/palettes.dart';
 import '../../../core/utils/formatters.dart';
 import '../domain/game_definition.dart';
 
@@ -142,7 +141,7 @@ class CatalogSeeder {
         config['clues'] = (55 - level * 3).clamp(17, 55);
         break;
       case 'match3':
-        config['target'] = (2500 * multiplier).round();
+        config['target'] = ((config['target'] as int) * multiplier).round();
         break;
       case 'tic_tac_toe':
         config['aiLevel'] = level == 1 ? 1 : (level == 2 ? 2 : 3);

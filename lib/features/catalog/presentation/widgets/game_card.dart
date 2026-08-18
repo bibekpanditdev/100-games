@@ -6,7 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../shared/widgets/badges.dart';
 import '../../../../shared/widgets/game_thumbnail.dart';
-import '../../../../shared/widgets/star_rating.dart';
 import '../../domain/game_definition.dart';
 import '../catalog_providers.dart';
 
@@ -106,23 +105,6 @@ class GameCard extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class _StarScrim extends StatelessWidget {
-  const _StarScrim({required this.stars});
-  final int stars;
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.onSurface.withOpacity(0.45),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: StarRating(stars: stars, max: 3, size: 14),
     );
   }
 }

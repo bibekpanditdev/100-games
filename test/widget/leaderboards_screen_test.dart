@@ -3,7 +3,7 @@ library;
 
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:thousand_games/features/leaderboards/presentation/leaderboards_screen.dart';
+import 'package:game/features/leaderboards/presentation/leaderboards_screen.dart';
 
 import '../helpers/test_container.dart';
 
