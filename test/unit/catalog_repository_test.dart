@@ -54,7 +54,7 @@ void main() {
       template: 'match3',
       difficulty: Difficulty.hard,
       themeId: 'neon',
-      config: const {'cols': 9},
+      config: const GameConfig({'cols': 9}),
     );
     final restored = GameDefinition.fromJson(def.toJson());
     expect(restored.id, def.id);

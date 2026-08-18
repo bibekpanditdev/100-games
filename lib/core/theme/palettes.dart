@@ -41,7 +41,7 @@ class GamePalette {
   LinearGradient get bgGradient => LinearGradient(
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
-        colors: [backgroundLight, backgroundLight.withOpacity(0.95)],
+        colors: [backgroundLight, backgroundLight.withValues(alpha: 0.95)],
       );
 }
 

@@ -18,7 +18,7 @@ GameDefinition _game(String id, GameCategory category) => GameDefinition(
       template: 'snake',
       difficulty: Difficulty.medium,
       themeId: 'ocean',
-      config: const {},
+      config: const GameConfig({}),
     );
 
 void main() {

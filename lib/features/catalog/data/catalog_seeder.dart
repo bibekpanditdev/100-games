@@ -108,7 +108,7 @@ class CatalogSeeder {
           difficulty: difficulty,
           themeId: paletteId,
           level: level,
-          config: config,
+          config: GameConfig(config),
           popularity: 1000 - (level * 50) + (stableHash(id) % 100),
           isNew: level == 1,
         ));

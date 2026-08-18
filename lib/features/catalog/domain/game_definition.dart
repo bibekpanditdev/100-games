@@ -56,7 +56,7 @@ class GameDefinition {
     required this.difficulty,
     required this.themeId,
     this.level = 1,
-    this.config = const {},
+    this.config = const GameConfig({}),
     this.thumbnail,
     this.unlocked = true,
     this.popularity = 0,
@@ -74,7 +74,7 @@ class GameDefinition {
   final int level;
 
   /// Template-specific knobs (grid size, speed, target score, ...).
-  final Map<String, dynamic> config;
+  final GameConfig config;
 
   final String? thumbnail;
   final bool unlocked;
@@ -90,7 +90,7 @@ class GameDefinition {
       difficulty: Difficulty.fromString(json['difficulty'] as String? ?? ''),
       themeId: json['theme'] as String? ?? json['themeId'] as String? ?? 'ocean',
       level: json['level'] as int? ?? 1,
-      config: (json['config'] as Map<String, dynamic>?) ?? const {},
+      config: GameConfig((json['config'] as Map<String, dynamic>?) ?? const {}),
       thumbnail: json['thumbnail'] as String?,
       unlocked: json['unlocked'] as bool? ?? true,
     );
@@ -106,7 +106,7 @@ class GameDefinition {
         'level': level,
         'thumbnail': thumbnail,
         'unlocked': unlocked,
-        'config': config,
+        'config': config.raw,
       };
 }
 
@@ -114,6 +114,10 @@ class GameConfig {
   const GameConfig(this.raw);
 
   final Map<String, dynamic> raw;
+
+  dynamic operator [](String key) => raw[key];
+
+  bool containsKey(String key) => raw.containsKey(key);
 
   int getInt(String key, int fallback) {
     final v = raw[key];

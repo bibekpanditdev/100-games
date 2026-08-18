@@ -272,8 +272,8 @@ class _LevelIntro extends StatelessWidget {
         if (opacity <= 0) return const SizedBox.shrink();
         return Container(
           color: theme.brightness == Brightness.light 
-              ? Colors.white.withOpacity(opacity) 
-              : Colors.black.withOpacity(opacity),
+              ? Colors.white.withValues(alpha: opacity) 
+              : Colors.black.withValues(alpha: opacity),
           child: Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -285,7 +285,7 @@ class _LevelIntro extends StatelessWidget {
                     style: theme.textTheme.displayMedium?.copyWith(
                       fontWeight: FontWeight.w900,
                       letterSpacing: 4 + val * 20,
-                      color: theme.colorScheme.onSurface.withOpacity(opacity),
+                      color: theme.colorScheme.onSurface.withValues(alpha: opacity),
                     ),
                   ),
                 ),
@@ -295,7 +295,7 @@ class _LevelIntro extends StatelessWidget {
                   style: theme.textTheme.labelLarge?.copyWith(
                     letterSpacing: 4,
                     fontWeight: FontWeight.bold,
-                    color: theme.colorScheme.primary.withOpacity(opacity),
+                    color: theme.colorScheme.primary.withValues(alpha: opacity),
                   ),
                 ),
               ],
@@ -387,7 +387,7 @@ class _PauseOverlay extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Container(
-      color: Colors.black.withOpacity(0.85),
+      color: Colors.black.withValues(alpha: 0.85),
       child: Center(
         child: SingleChildScrollView(
           child: Column(

@@ -316,10 +316,10 @@ class _DodgeTrackPainter extends CustomPainter {
       canvas.drawRRect(RRect.fromRectAndRadius(rect, const Radius.circular(4)), Paint()..color = const Color(0xFF5D4037));
       canvas.drawRRect(
         RRect.fromRectAndRadius(rect.deflate(4), const Radius.circular(2)),
-        Paint()..color = color.withOpacity(0.8),
+        Paint()..color = color.withValues(alpha: 0.8),
       );
       // Crate "X" detail
-      final pX = Paint()..color = Colors.black.withOpacity(0.2)..style = PaintingStyle.stroke..strokeWidth = 2;
+      final pX = Paint()..color = Colors.black.withValues(alpha: 0.2)..style = PaintingStyle.stroke..strokeWidth = 2;
       canvas.drawLine(rect.topLeft, rect.bottomRight, pX);
       canvas.drawLine(rect.topRight, rect.bottomLeft, pX);
     }
@@ -335,11 +335,11 @@ class _DodgeTrackPainter extends CustomPainter {
 
   void _drawRealisticCar(Canvas canvas, Offset pos, Size size, Color color) {
     final paint = Paint()..color = color..style = PaintingStyle.fill;
-    final glassPaint = Paint()..color = Colors.black.withOpacity(0.6);
+    final glassPaint = Paint()..color = Colors.black.withValues(alpha: 0.6);
     final lightPaint = Paint()..color = Colors.white..maskFilter = const MaskFilter.blur(BlurStyle.normal, 3);
 
     // 1. Shadow
-    canvas.drawRRect(RRect.fromRectAndRadius((pos & size).shift(const Offset(4, 4)), const Radius.circular(10)), Paint()..color = Colors.black.withOpacity(0.3)..maskFilter = const MaskFilter.blur(BlurStyle.normal, 5));
+    canvas.drawRRect(RRect.fromRectAndRadius((pos & size).shift(const Offset(4, 4)), const Radius.circular(10)), Paint()..color = Colors.black.withValues(alpha: 0.3)..maskFilter = const MaskFilter.blur(BlurStyle.normal, 5));
 
     // 2. Main Body (Aerodynamic)
     final body = Path()

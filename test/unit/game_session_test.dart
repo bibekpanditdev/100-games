@@ -13,7 +13,7 @@ GameDefinition _def(Map<String, dynamic> config) => GameDefinition(
       template: 'snake',
       difficulty: Difficulty.medium,
       themeId: 'neon',
-      config: config,
+      config: GameConfig(config),
     );
 
 void main() {

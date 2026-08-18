@@ -12,7 +12,7 @@ void main() {
   final Map<String, (ColorScheme, Color)> themes = {
     'light': (() {
       final theme = buildLightTheme();
-      return (theme.colorScheme, theme.colorScheme.surfaceVariant);
+      return (theme.colorScheme, theme.colorScheme.surfaceContainerHighest);
     })(),
     'dark': (() {
       final theme = buildDarkTheme();

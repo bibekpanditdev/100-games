@@ -266,19 +266,19 @@ class _TicTacToeGameState extends State<TicTacToeGame> {
       child: Container(
         margin: const EdgeInsets.all(4),
         decoration: BoxDecoration(
-          color: (r + c) % 2 == 0 ? Colors.white.withOpacity(0.5) : Colors.white.withOpacity(0.3),
+          color: (r + c) % 2 == 0 ? Colors.white.withValues(alpha: 0.5) : Colors.white.withValues(alpha: 0.3),
           borderRadius: BorderRadius.circular(16),
-          boxShadow: inWinLine ? [BoxShadow(color: palette.accent.withOpacity(0.4), blurRadius: 12)] : null,
+          boxShadow: inWinLine ? [BoxShadow(color: palette.accent.withValues(alpha: 0.4), blurRadius: 12)] : null,
           border: inWinLine || hinted
               ? Border.all(color: palette.accent, width: 3)
-              : Border.all(color: Colors.black.withOpacity(0.05), width: 1),
+              : Border.all(color: Colors.black.withValues(alpha: 0.05), width: 1),
         ),
         alignment: Alignment.center,
         child: AnimatedSwitcher(
           duration: const Duration(milliseconds: 300),
           transitionBuilder: (child, animation) => ScaleTransition(scale: animation, child: child),
           child: mark == 0
-              ? (hinted ? Icon(Icons.lightbulb, color: palette.accent.withOpacity(0.3), size: 30) : null)
+              ? (hinted ? Icon(Icons.lightbulb, color: palette.accent.withValues(alpha: 0.3), size: 30) : null)
               : CustomPaint(
                   key: ValueKey('mark_$index'),
                   size: const Size(50, 50),

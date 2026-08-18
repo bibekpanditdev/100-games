@@ -35,7 +35,7 @@ class GameCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: theme.colorScheme.outline.withOpacity(0.1)),
+        border: Border.all(color: theme.colorScheme.outline.withValues(alpha: 0.1)),
       ),
       child: Material(
         color: theme.colorScheme.surface,
@@ -80,7 +80,7 @@ class GameCard extends StatelessWidget {
                             Container(
                               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                               decoration: BoxDecoration(
-                                color: theme.colorScheme.primary.withOpacity(0.05),
+                                color: theme.colorScheme.primary.withValues(alpha: 0.05),
                                 borderRadius: BorderRadius.circular(4),
                               ),
                               child: Text(

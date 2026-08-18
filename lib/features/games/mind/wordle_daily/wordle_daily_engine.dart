@@ -316,7 +316,7 @@ class _WordleDailyGameState extends State<WordleDailyGame>
       letter = _entry[c];
     }
     final theme = Theme.of(context);
-    final disabled = theme.colorScheme.onSurface.withOpacity(0.38);
+    final disabled = theme.colorScheme.onSurface.withValues(alpha: 0.38);
     Color bg;
     Color fg;
     Widget? marker;
@@ -334,14 +334,14 @@ class _WordleDailyGameState extends State<WordleDailyGame>
         marker = Icon(Icons.circle, size: cell * 0.2, color: fg);
         stateLabel = 'wrong spot';
       case WordleMark.absent:
-        bg = theme.colorScheme.surfaceContainerHighest.withOpacity(0.7);
+        bg = theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.7);
         fg = disabled;
         decoration = TextDecoration.lineThrough;
         stateLabel = 'not in word';
       case null:
         bg = isActiveRow
             ? _session.palette.boardA
-            : _session.palette.boardB.withOpacity(0.6);
+            : _session.palette.boardB.withValues(alpha: 0.6);
         fg = GamePalette.contrastOn(_session.palette.boardA);
     }
     return Padding(
@@ -447,7 +447,7 @@ class _WordleDailyGameState extends State<WordleDailyGame>
   Widget _key(String letter, double size) {
     final logic = _logic!;
     final theme = Theme.of(context);
-    final disabled = theme.colorScheme.onSurface.withOpacity(0.38);
+    final disabled = theme.colorScheme.onSurface.withValues(alpha: 0.38);
     final state = logic.keyboardState[letter];
     final used = _interactive &&
         !logic.isOver &&
@@ -470,7 +470,7 @@ class _WordleDailyGameState extends State<WordleDailyGame>
         marker = Icon(Icons.circle, size: size * 0.17, color: fg);
         stateLabel = ', in word elsewhere';
       case WordleMark.absent:
-        bg = theme.colorScheme.surfaceContainerHighest.withOpacity(0.6);
+        bg = theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.6);
         fg = disabled;
         decoration = TextDecoration.lineThrough;
         stateLabel = ', not in word';

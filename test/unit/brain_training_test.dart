@@ -29,7 +29,7 @@ void main() {
         template: 'sudoku',
         difficulty: Difficulty.medium,
         themeId: 'ocean',
-        config: {'group': group},
+        config: GameConfig({'group': group}),
       );
 
   test('routine picks one game per subcategory, deterministically', () async {

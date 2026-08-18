@@ -9,16 +9,15 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 /// sRGB channel to linear-light channel (WCAG 2.1 definition).
-double _linearize(int c8) {
-  final c = c8 / 255.0;
-  return c <= 0.04045 ? c / 12.92 : math.pow((c + 0.055) / 1.055, 2.4).toDouble();
+double _linearize(double c) {
+  return c <= 0.03928 ? c / 12.92 : math.pow((c + 0.055) / 1.055, 2.4).toDouble();
 }
 
 /// WCAG relative luminance of [c], 0..1.
 double relativeLuminance(Color c) {
-  return 0.2126 * _linearize(c.red) +
-      0.7152 * _linearize(c.green) +
-      0.0722 * _linearize(c.blue);
+  return 0.2126 * _linearize(c.r) +
+      0.7152 * _linearize(c.g) +
+      0.0722 * _linearize(c.b);
 }
 
 /// WCAG contrast ratio between two colors, >= 1.0.

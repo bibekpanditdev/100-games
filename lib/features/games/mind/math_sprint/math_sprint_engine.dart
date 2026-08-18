@@ -235,7 +235,7 @@ class _MathSprintGameState extends State<MathSprintGame> {
                                 : 'Answer: ${q.answer}'),
                         style: theme.textTheme.titleMedium!.copyWith(
                           color: GamePalette.contrastOn(palette.boardA)
-                              .withOpacity(0.7),
+                              .withValues(alpha: 0.7),
                         ),
                       ),
                     ],

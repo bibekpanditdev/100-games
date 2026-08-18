@@ -83,7 +83,7 @@ ThemeData _base(ColorScheme scheme) {
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
-        side: BorderSide(color: scheme.outline.withOpacity(0.1), width: 1),
+        side: BorderSide(color: scheme.outline.withValues(alpha: 0.1), width: 1),
       ),
     ),
     filledButtonTheme: FilledButtonThemeData(
@@ -94,7 +94,7 @@ ThemeData _base(ColorScheme scheme) {
       ),
     ),
     chipTheme: base.chipTheme.copyWith(
-      shape: StadiumBorder(side: BorderSide(color: scheme.outline.withOpacity(0.5), width: 1)),
+      shape: StadiumBorder(side: BorderSide(color: scheme.outline.withValues(alpha: 0.5), width: 1)),
       backgroundColor: Colors.transparent,
       labelStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: scheme.onSurface),
     ),

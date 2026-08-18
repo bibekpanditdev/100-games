@@ -143,8 +143,8 @@ class _AchievementCard extends StatelessWidget {
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
           color: _unlocked
-              ? scheme.primaryContainer.withOpacity(0.45)
-              : scheme.surfaceContainerHighest.withOpacity(0.35),
+              ? scheme.primaryContainer.withValues(alpha: 0.45)
+              : scheme.surfaceContainerHighest.withValues(alpha: 0.35),
           borderRadius: BorderRadius.circular(14),
         ),
         child: Column(

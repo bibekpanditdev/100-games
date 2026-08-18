@@ -50,7 +50,7 @@ class GameThumbnail extends StatelessWidget {
         color: palette.backgroundLight,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 10, offset: const Offset(0, 4)),
+          BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 10, offset: const Offset(0, 4)),
         ],
       ),
       clipBehavior: Clip.antiAlias,
@@ -75,8 +75,8 @@ class GameThumbnail extends StatelessWidget {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  palette.backgroundLight.withOpacity(0.1),
-                  palette.backgroundLight.withOpacity(0.8),
+                  palette.backgroundLight.withValues(alpha: 0.1),
+                  palette.backgroundLight.withValues(alpha: 0.8),
                 ],
               ),
             ),
@@ -89,7 +89,7 @@ class GameThumbnail extends StatelessWidget {
               size: (size ?? 100) * 0.4,
               color: palette.accent,
               shadows: [
-                Shadow(color: Colors.black.withOpacity(0.2), offset: const Offset(0, 4), blurRadius: 10),
+                Shadow(color: Colors.black.withValues(alpha: 0.2), offset: const Offset(0, 4), blurRadius: 10),
               ],
             ),
           ),
@@ -100,7 +100,7 @@ class GameThumbnail extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.6),
+                color: Colors.black.withValues(alpha: 0.6),
                 borderRadius: BorderRadius.circular(4),
               ),
               child: Text(
@@ -145,13 +145,13 @@ class _ProceduralPainter extends CustomPainter {
     final bgGradient = LinearGradient(
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
-      colors: [palette.backgroundLight, palette.accent.withOpacity(0.2)],
+      colors: [palette.backgroundLight, palette.accent.withValues(alpha: 0.2)],
     );
     canvas.drawRect(rect, paint..shader = bgGradient.createShader(rect));
     
     paint.shader = null;
     for (var i = 0; i < 5; i++) {
-      paint.color = palette.accent.withOpacity(rand.nextDouble() * 0.1);
+      paint.color = palette.accent.withValues(alpha: rand.nextDouble() * 0.1);
       canvas.drawCircle(
         Offset(rand.nextDouble() * size.width, rand.nextDouble() * size.height),
         rand.nextDouble() * size.width * 0.5,

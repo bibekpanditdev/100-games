@@ -92,7 +92,7 @@ class GameSessionController extends ChangeNotifier {
   final GameDefinition definition;
   final GamePalette palette;
 
-  GameConfig get config => GameConfig(definition.config);
+  GameConfig get config => definition.config;
 
   GameHudData _hud = const GameHudData();
   bool _paused = false;
