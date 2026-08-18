@@ -7,7 +7,6 @@ import 'dart:convert';
 
 import 'package:sqflite/sqflite.dart';
 
-import '../../core/storage/app_database.dart';
 import '../catalog/domain/game_definition.dart';
 
 class ScoreEntry {

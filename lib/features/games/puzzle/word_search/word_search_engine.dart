@@ -351,7 +351,6 @@ class _WordSearchGameState extends State<WordSearchGame> {
 
   Widget _buildBoard() {
     final palette = widget.session.palette;
-    final grid = _grid!;
     return Semantics(
       label: 'Word search grid, $_size by $_size letters',
       child: LayoutBuilder(

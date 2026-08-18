@@ -302,9 +302,6 @@ class _DodgeTrackPainter extends CustomPainter {
 
     // Obstacles: Draw as simple modern "boxes" or "blocks" with shadows
     final obstacleHeight = DodgeRunnerLogic.obstacleHeight * size.height;
-    final shadowPaint = Paint()
-      ..color = Colors.black.withOpacity(0.3)
-      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 4);
 
     for (final obstacle in board.obstacles) {
       final color = kPieceColors[obstacle.colorIndex % kPieceColors.length];

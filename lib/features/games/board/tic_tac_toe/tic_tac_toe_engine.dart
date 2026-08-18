@@ -10,7 +10,6 @@ import 'package:flutter/services.dart';
 
 import '../../../game_player/game_contracts.dart';
 import '../../../../core/services/audio_service.dart';
-import '../../../../core/theme/palettes.dart';
 import 'tic_tac_toe_logic.dart';
 
 /// Catalog engine for the `tic_tac_toe` template.

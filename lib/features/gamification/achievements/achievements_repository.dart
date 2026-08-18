@@ -3,7 +3,6 @@ library;
 
 import 'package:sqflite/sqflite.dart';
 
-import '../../../core/storage/app_database.dart';
 import '../progress_controller.dart';
 import '../../catalog/domain/game_definition.dart';
 import '../../leaderboards/scores_repository.dart';

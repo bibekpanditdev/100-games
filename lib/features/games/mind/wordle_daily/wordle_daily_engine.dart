@@ -196,7 +196,7 @@ class _WordleDailyGameState extends State<WordleDailyGame>
       });
       return;
     }
-    final guess = logic.submit(_entry)!;
+    logic.submit(_entry)!;
     _entry = '';
     AudioService.I.sfx(SfxKeys.place);
     _save();
