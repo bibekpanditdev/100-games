@@ -3,6 +3,7 @@ library;
 
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:thousand_games/core/storage/app_database.dart';
 import 'package:thousand_games/features/catalog/domain/game_definition.dart';
 import 'package:thousand_games/features/gamification/achievements/achievement_definitions.dart';
 import 'package:thousand_games/features/gamification/achievements/achievements_repository.dart';

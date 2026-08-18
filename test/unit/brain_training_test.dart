@@ -106,7 +106,7 @@ void main() {
     expect(brain.historyStreak(days, now: DateTime(2026, 8, 21)), 0);
   });
 
-  test('empty history renders zero streak (dashboard empty state)', () {
+  test('empty history renders zero streak (dashboard empty state)', () async {
     expect(brain.historyStreak(const []), 0);
     expect(await brain.history(), isEmpty);
   });

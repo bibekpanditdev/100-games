@@ -53,7 +53,7 @@ class _BlockFallGameState extends State<BlockFallGame> {
 
   Timer? _ticker;
   double _fallAccumulator = 0;
-  int _dragX = 0;
+  double _dragX = 0;
   double _dragY = 0;
   bool _awaitingContinue = false;
   int _lastLines = 0;

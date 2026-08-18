@@ -125,10 +125,10 @@ class GameSessionController extends ChangeNotifier {
   }
 
   /// Ask the shell for a hint (costs coins or a rewarded ad).
-  Future<bool> requestHint() async => _hintRequest?.call() ?? false;
+  Future<bool> requestHint() async => (await _hintRequest?.call()) ?? false;
 
   /// Ask the shell to revive the player. Call BEFORE [finish].
-  Future<bool> requestContinue() async => _continueRequest?.call() ?? false;
+  Future<bool> requestContinue() async => (await _continueRequest?.call()) ?? false;
 
   /// HUD writers ----------------------------------------------------------
 

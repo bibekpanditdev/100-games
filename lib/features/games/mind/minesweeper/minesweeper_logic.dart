@@ -79,7 +79,7 @@ class MinesweeperLogic {
 
   int _flood(int x, int y) {
     var count = 0;
-    final stack = <[int, int]>[
+    final stack = <List<int>>[
       [x, y]
     ];
     while (stack.isNotEmpty) {

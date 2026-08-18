@@ -29,8 +29,8 @@ class BrainDashboardScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Daily Brain Training')),
     body: progressAsync.when(
-        loading: () => const ListView(
-              children: [
+        loading: () => ListView(
+              children: const [
                 SizedBox(height: 24),
                 Center(child: SkeletonBox(width: 220, height: 96, radius: 16)),
                 SizedBox(height: 16),

@@ -79,6 +79,18 @@ class ProgressController extends ChangeNotifier {
     _box.put('starsByTemplate', map);
   }
 
+  /// Suggested difficulty for a template from recent results:
+  /// avg stars >= 2.4 -> hard, >= 1.4 -> medium, else easy. Null when there
+  /// isn't enough history yet (fewer than 3 results).
+  String? suggestedDifficulty(String template) {
+    final list = recentStarsFor(template);
+    if (list.length < 3) return null;
+    final avg = list.reduce((a, b) => a + b) / list.length;
+    if (avg >= 2.4) return 'hard';
+    if (avg >= 1.4) return 'medium';
+    return 'easy';
+  }
+
   /// Call once per day (any play). Returns the current streak after update.
   /// [now] is injectable for tests.
   int touchDailyStreak({DateTime? now}) {

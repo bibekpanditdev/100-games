@@ -66,8 +66,8 @@ class SnakeLogic {
 
   final Random _random;
 
-  List<Point<int>> _body;
-  Point<int> _food;
+  late List<Point<int>> _body;
+  late Point<int> _food;
 
   /// Current travel direction (updated as queued turns are consumed).
   SnakeDirection direction = SnakeDirection.right;
